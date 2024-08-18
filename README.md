@@ -42,55 +42,54 @@ This processors control unit currently contains the following control signals, w
 
 | Instruction | Op | RegWrite | ImmSrc | ALUSrc | MemWrite | ResultSrc | Branch | ALUOp | Jump |
 |-------------|-------|--|--|--|--|--|--|--|--|
-|lw           |0000011|1 |00|1 |0 |01|0 |00|0 |
-|sw           |0100011|0 |01|1 |1 |xx|0 |00|0 |
-|R-type       |0110011|1 |xx|0 |0 |00|0 |10|0 |
-|beq          |1100011|0 |10|0 |0 |xx|1 |01|0 |
-|I-type ALU   |0010011|1 |00|1 |0 |00|0 |10|0 |
-|jal          |1101111|1| 11|x |0 |10|0 |xx|1 |
+|lw           |0000011|1 |000|1 |0 |01|0 |00|0 |
+|sw           |0100011|0 |001|1 |1 |xx|0 |00|0 |
+|R-type       |0110011|1 |xxx|0 |0 |00|0 |10|0 |
+|beq          |1100011|0 |010|0 |0 |xx|1 |01|0 |
+|I-type arithmetic ALU|0010011|1 |000|1 |0 |00|0 |10|0 |
+|I-type shift ALU     |0010011|1 |100|1 |0 |00|0 |10|0 |
+|jal          |1101111|1 |011|x |0 |10|0 |xx|1 |
 
 
 # ALU
 
-The ALU implements add, subtract, and, or, xor, slt, and sltu. All logical and arithmetic shifts, are handeled by a shifting unit, while all extensions are handeled by an extension unit.
+The ALU implements add, subtract, and, or, xor, slt, sltu, sll, srl, and sra. All extensions are handeled by an extension unit.
 
 | Instructions | ALUOp | funct3 | {op[5], funct7[5] | ALUControl |
-|--------------|-------|--------|-------------------|------------|
-|lw, sw        |   00  | x      | x                 | 000        |
-|beq           |   01  | x      | x                 | 001        |
-|add           |   10  | 000    | 00, 01, 10        | 000        |
-|sub           |   10  | 000    | 11                | 001        |
-|slt           |   10  | 010    | x                 | 101        |
-|or            |   10  | 110    | x                 | 011        |
-|and           |   10  | 111    | x                 | 010        |
+|--------------|-------|--------|-------------------|-------------|
+|lw, sw        |   00  | x      | x                 | 0000        |
+|beq           |   01  | x      | x                 | 0001        |
+|add           |   10  | 000    | 00, 01, 10        | 0000        |
+|sub           |   10  | 000    | 11                | 0001        |
+|slt           |   10  | 010    | x                 | 0101        |
+|or            |   10  | 110    | x                 | 0011        |
+|and           |   10  | 111    | x                 | 0010        |
+|sll, slli     |   10  | 001    | 00, 10            | 0111        |
+|srl, srli     |   10  | 101    | 00, 10            | 1000        |
+|sra, srai     |   10  | 101    | 11, 01            | 1001        |
 
 Note that the ALU control has the ALU perform the following operations:
 | ALUControl | Operation |
 |------------|-----------|
-|000|add|
-|001|subtract|
-|010|and|
-|011|or|
-|100|xor|
-|101|set less than (slt)|
-|110|set less than unsigned (sltu)|
+|0000|add|
+|0001|subtract|
+|0010|and|
+|0011|or|
+|0100|xor|
+|0101|set less than (slt)|
+|0110|set less than unsigned (sltu)|
+|0111|shift left logical (sll)|
+|1000|shift right logical (srl)|
+|1001|shift right arithmetic (sra)|
 
-# Immediate Extension, and Shifting Units
+# Immediate Extension
 The immediate extension unit needs to extend immediates depending on the type of instruction the immediate recieves. The type of extension is controlled by the signal ImmSrc. Note that this extension unit takes advantage of the fact that the most significant bit of all immediates is always held in bit 31 of instr. The following table describes the extension units behaviour.
 
 | ImmSrc | ImmExt | Instruction Type | Description |
 |--------|--------|------------------|-------------|
-|00|{{20{Instr[31]}}, Instr[31:20]}| I | 12-bit signed immediate extension|
-|01|{{20{Instr[31]}}, Instr[31:25], Instr[11:7]}| S | 12-bit signed immediate extension|
-|10|{{20{Instr[31]}}, Instr[7], Instr[30:25], Instr[11:8], 1'b0}| B | 13-bit signed immediate extension|
-|11|{{12{Instr[31]}}, Instr[19:12], Instr[20], Instr[30:21], 1'b0}| J | 21-bit signed immediate extension|
-
-
-The shifting unit supports three shifting operations: shift left logical, shift right logical, and shift right arithmetic. The type of shift is controlled by the signal ShftSrc. The following table describes the shift units behaviour.
-
-| ShftSrc | Type of Shift |
-|---------|---------------|
-|00|Shift left logical|
-|01|Shift right logical|
-|10|Shift right arithmetic|
+|000|{{20{Instr[31]}}, Instr[31:20]}| I | 12-bit signed immediate extension|
+|001|{{20{Instr[31]}}, Instr[31:25], Instr[11:7]}| S | 12-bit signed immediate extension|
+|010|{{20{Instr[31]}}, Instr[7], Instr[30:25], Instr[11:8], 1'b0}| B | 13-bit signed immediate extension|
+|011|{{12{Instr[31]}}, Instr[19:12], Instr[20], Instr[30:21], 1'b0}| J | 21-bit signed immediate extension|
+|100|{27'b0, Instr[24:20]}| I | 5-bit unsigned immediate extension|
 
