@@ -17,6 +17,25 @@ This project is a single-cycle implementation of a RISC-V microprocessor, develo
 | `jal`       |'J'   | 1101111|Jump and link|
 | `addi`      |'I'   | 0010011|Add immediate|
 
+# Memory Interface
+This design assumes a memory that can be accessed in a single-cycle, and uses both a data memory, and an instruction memory.
+
+# Control Unit
+This processors control unit currently contains the following control signals, with the listed functions
+
+| Control Signal | Function |
+|----------------|----------|
+|RegWrite|Determine if RF is to be written to, active high|
+|ImmSrc|Determines how the extension unit is to extend an immediate|
+|ALUSrc|Determines B operand ALU is to recieve|
+|MemWrite|Determines if data memory is to be written to, active high|
+|ResultSrc|Determines what value is to be written back to RF|
+|Branch|Determine if a instruction MAY branch|
+|PCSrc|Determines if branch/jump is actually to take place|
+|ALUOp|Assists in determining ALU operation (further dependant on funct3 and funct7)|
+|ALUControl|Determines the ALU operation|
+
+
 # Main Decoder Truth Table
 
 | Instruction | Op | RegWrite | ImmSrc | ALUSrc | MemWrite | ResultSrc | Branch | ALUOp |
