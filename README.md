@@ -40,12 +40,15 @@ This processors control unit currently contains the following control signals, w
 
 # Main Decoder Truth Table
 
-| Instruction | Op | RegWrite | ImmSrc | ALUSrc | MemWrite | ResultSrc | Branch | ALUOp |
-|-------------|-------|--|--|--|--|--|--|--|
-|lw|0000011|1|00|1|0|1|0|00|
-|sw|0100011|0|01|1|1|x|0|00|
-|R-type|0110011|1|xx|0|0|0|0|10|
-|beq|1100011|0|10|0|0|x|1|01|
+| Instruction | Op | RegWrite | ImmSrc | ALUSrc | MemWrite | ResultSrc | Branch | ALUOp | Jump |
+|-------------|-------|--|--|--|--|--|--|--|--|
+|lw|0000011|1|00|1|0|01|0|00|0|
+|sw|0100011|0|01|1|1|xx|0|00|0|
+|R-type|0110011|1|xx|0|0|00|0|10|0|
+|beq|1100011|0|10|0|0|xx|1|01|0|
+|I-type ALU|0010011|1|00|1|0|00|0|10|0|
+|jal|1101111|1|11|x|0|10|0|xx|1|
+
 
 # ALU Decoder Truth Table
 
