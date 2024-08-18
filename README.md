@@ -23,7 +23,7 @@ A schematic of the implemented microarchitecture is available in this repository
 This design assumes a memory that can be accessed in a single-cycle, and uses both a data memory, and an instruction memory.
 
 # Control Unit
-This processors control unit currently contains the following control signals, with the listed functions
+This processors control unit currently contains the following control signals. Note that this table includes internal control signals which are not seen on the final schematic.
 
 | Control Signal | Function |
 |----------------|----------|
@@ -34,6 +34,7 @@ This processors control unit currently contains the following control signals, w
 |ResultSrc|Determines what value is to be written back to RF|
 |Branch|Determine if a instruction MAY branch|
 |PCSrc|Determines if branch/jump is actually to take place|
+|jump|Asserts PCSrc, ensuring a jump takes place|
 |ALUOp|Assists in determining ALU operation (further dependant on funct3 and funct7)|
 |ALUControl|Determines the ALU operation|
 
