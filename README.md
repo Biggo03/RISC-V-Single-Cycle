@@ -20,6 +20,11 @@ A schematic of the implemented microarchitecture is available in this repository
 | `srl`       |'R'   | 0110011|Shift right logical|
 | `sra`       |'R'   | 0110011|Arithmetic shift right|
 | `beq`       |'B'   | 1100011|Branches if equal|
+| `bne`       |'B'   | 1100011|Branches if not equal|
+| `bge`       |'B'   | 1100011|Branches if greater or equal to|
+| `bgeu`      |'B'   | 1100011|Branches if greater or equal to (unsigned)|
+| `blt`       |'B'   | 1100011|Branches if less than|
+| `bltu`      |'B'   | 1100011|Branches if less than (unsigned)|
 | `jal`       |'J'   | 1101111|Jump and link|
 | `addi`      |'I'   | 0010011|Add immediate|
 | `andi`      |'I'   | 0010011|AND a register and an immediate|
@@ -44,7 +49,7 @@ This processors control unit currently contains the following control signals. N
 |ALUSrc|Determines B operand ALU is to recieve|
 |MemWrite|Determines if data memory is to be written to, active high|
 |ResultSrc|Determines what value is to be written back to RF|
-|Branch|Determine if a instruction MAY branch|
+|Branch|Determine if an instruction MAY branch, used in conjunction with flags|
 |PCSrc|Determines if branch/jump is actually to take place|
 |jump|Asserts PCSrc, ensuring a jump takes place|
 |ALUOp|Assists in determining ALU operation (further dependant on funct3 and funct7)|
@@ -55,12 +60,17 @@ This processors control unit currently contains the following control signals. N
 
 | Instruction | Op | RegWrite | ImmSrc | ALUSrc | MemWrite | ResultSrc | Branch | ALUOp | Jump |
 |-------------|-------|--|--|--|--|--|--|--|--|
-|lw           |0000011|1 |000|1 |0 |01|0 |00|0 |
-|sw           |0100011|0 |001|1 |1 |xx|0 |00|0 |
-|R-type       |0110011|1 |xxx|0 |0 |00|0 |10|0 |
-|beq          |1100011|0 |010|0 |0 |xx|1 |01|0 |
-|I-type arithmetic ALU|0010011|1 |000|1 |0 |00|0 |10|0 |
-|I-type shift ALU     |0010011|1 |100|1 |0 |00|0 |10|0 |
+|lw           |0000011|1 |000|1 |0 |01|000 |00|0 |
+|sw           |0100011|0 |001|1 |1 |xx|000 |00|0 |
+|R-type       |0110011|1 |xxx|0 |0 |00|000 |10|0 |
+|I-type arithmetic ALU|0010011|1 |000|1 |0 |00|000 |10|0 |
+|I-type shift ALU     |0010011|1 |100|1 |0 |00|000 |10|0 |
+|beq          |1100011|0 |010|0 |0 |xx|001 |01|0 |
+|bne          |1100011|0 |010|0 |0 |xx|010 |01|0 |
+|bge          |1100011|0 |010|0 |0 |xx|011 |01|0 |
+|bgeu          |1100011|0 |010|0 |0 |xx|100 |01|0 |
+|blt          |1100011|0 |010|0 |0 |xx|101 |01|0 |
+|bltu          |1100011|0 |010|0 |0 |xx|110 |01|0 |
 |jal          |1101111|1 |011|x |0 |10|0 |xx|1 |
 
 
@@ -71,7 +81,7 @@ The ALU implements add, subtract, and, or, xor, slt, sltu, sll, srl, and sra. Al
 | Instructions | ALUOp | funct3 | {op[5], funct7[5] | ALUControl |
 |--------------|-------|--------|-------------------|-------------|
 |lw, sw        |   00  | x      | x                 | 0000        |
-|beq           |   01  | x      | x                 | 0001        |
+|B-type instructions|   01  | x      | x                 | 0001        |
 |add, addi     |   10  | 000    | 00, 01, 10        | 0000        |
 |sub           |   10  | 000    | 11                | 0001        |
 |slt           |   10  | 010    | x                 | 0101        |
