@@ -30,12 +30,20 @@ This project is a single-cycle implementation of a RISC-V microprocessor, develo
 
 | Instructions | ALUOp | funct3 | {op[5], funct7[5] | ALUControl |
 |--------------|-------|--------|-------------------|------------|
-|'lw, sw'      | '00'  | 'x'    | 'x'               | '000'      |
-|'beq'         | '01'  | 'x'    | 'x'               | '001'      |
-|'add'         | '10'  | '000'  | '00, 01, 10'      | '000'      |
-|'sub'         | '10'  | '000'  | '11'              | '001'      |
-|'slt'         | '10'  | '010'  | 'x'               | '101'      |
-|'or'          | '10'  | '110'  | 'x'               | '011'      |
-|'and'         | '10'  | '111'  | 'x'               | '010'      |
+|lw, sw        |   00  | x      | x                 | 000        |
+|beq           |   01  | x      | x                 | 001        |
+|add           |   10  | 000    | 00, 01, 10        | 000        |
+|sub           |   10  | 000    | 11                | 001        |
+|slt           |   10  | 010    | x                 | 101        |
+|or            |   10  | 110    | x                 | 011        |
+|and           |   10  | 111    | x                 | 010        |
 
+Note that the ALU control has the ALU perform the following operations:
+| ALUControl | Operation |
+|------------|-----------|
+|000|add|
+|001|subtract|
+|011|or|
+|010|and|
+101|set less than (slt)|
 
