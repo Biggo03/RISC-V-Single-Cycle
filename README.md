@@ -15,9 +15,21 @@ A schematic of the implemented microarchitecture is available in this repository
 | `and`       |'R'   | 0110011|AND two registers|
 | `or`        |'R'   | 0110011|OR two registers|
 | `slt`       |'R'   | 0110011|Sets if rs1 < rs2|
+| `sltu`      |'R'   | 0110011|Sets if rs1 < rs2 in unsigned representation|
+| `sll`       |'R'   | 0110011|Shift left logical|
+| `srl`       |'R'   | 0110011|Shift right logical|
+| `sra`       |'R'   | 0110011|Arithmetic shift right|
 | `beq`       |'B'   | 1100011|Branches if equal|
 | `jal`       |'J'   | 1101111|Jump and link|
 | `addi`      |'I'   | 0010011|Add immediate|
+| `andi`      |'I'   | 0010011|AND a register and an immediate|
+| `ori`       |'I'   | 0010011|OR a register and an immediate|
+| `slli`      |'I'   | 0010011|Shift left logical by an immediate|
+| `srli`      |'I'   | 0010011|Shift right logical by an immediate|
+| `srai`      |'I'   | 0010011|Arithmetic shift right by an immediate|
+
+
+
 
 # Memory Interface
 This design assumes a memory that can be accessed in a single-cycle, and uses both a data memory, and an instruction memory.
@@ -60,11 +72,12 @@ The ALU implements add, subtract, and, or, xor, slt, sltu, sll, srl, and sra. Al
 |--------------|-------|--------|-------------------|-------------|
 |lw, sw        |   00  | x      | x                 | 0000        |
 |beq           |   01  | x      | x                 | 0001        |
-|add           |   10  | 000    | 00, 01, 10        | 0000        |
+|add, addi     |   10  | 000    | 00, 01, 10        | 0000        |
 |sub           |   10  | 000    | 11                | 0001        |
 |slt           |   10  | 010    | x                 | 0101        |
-|or            |   10  | 110    | x                 | 0011        |
-|and           |   10  | 111    | x                 | 0010        |
+|sltu          |   10  | 011    | x                 | 0110        |
+|or, ori       |   10  | 110    | x                 | 0011        |
+|and, andi     |   10  | 111    | x                 | 0010        |
 |sll, slli     |   10  | 001    | 00, 10            | 0111        |
 |srl, srli     |   10  | 101    | 00, 10            | 1000        |
 |sra, srai     |   10  | 101    | 11, 01            | 1001        |
