@@ -50,7 +50,9 @@ This processors control unit currently contains the following control signals, w
 |jal          |1101111|1| 11|x |0 |10|0 |xx|1 |
 
 
-# ALU Decoder Truth Table
+# ALU
+
+The ALU implements add, subtract, and, or, xor, slt, and sltu. All logical and arithmetic shifts, are handeled by a shifting unit, while all extensions are handeled by an extension unit.
 
 | Instructions | ALUOp | funct3 | {op[5], funct7[5] | ALUControl |
 |--------------|-------|--------|-------------------|------------|
@@ -67,7 +69,28 @@ Note that the ALU control has the ALU perform the following operations:
 |------------|-----------|
 |000|add|
 |001|subtract|
-|011|or|
 |010|and|
-101|set less than (slt)|
+|011|or|
+|100|xor|
+|101|set less than (slt)|
+|110|set less than unsigned (sltu)|
+
+# Immediate Extension, and Shifting Units
+The immediate extension unit needs to extend immediates depending on the type of instruction the immediate recieves. The type of extension is controlled by the signal ImmSrc. Note that this extension unit takes advantage of the fact that the most significant bit of all immediates is always held in bit 31 of instr. The following table describes the extension units behaviour.
+
+| ImmSrc | ImmExt | Instruction Type | Description |
+|--------|--------|------------------|-------------|
+|00|{{20{Instr[31]}}, Instr[31:20]}| I | 12-bit signed immediate extension|
+|01|{{20{Instr[31]}}, Instr[31:25], Instr[11:7]}| S | 12-bit signed immediate extension|
+|10|{{20{Instr[31]}}, Instr[7], Instr[30:25], Instr[11:8], 1'b0}| B | 13-bit signed immediate extension|
+|11|{{12{Instr[31]}}, Instr[19:12], Instr[20], Instr[30:21], 1'b0}| J | 21-bit signed immediate extension|
+
+
+The shifting unit supports three shifting operations: shift left logical, shift right logical, and shift right arithmetic. The type of shift is controlled by the signal ShftSrc. The following table describes the shift units behaviour.
+
+| ShftSrc | Type of Shift |
+|---------|---------------|
+|00|Shift left logical|
+|01|Shift right logical|
+|10|Shift right arithmetic|
 
