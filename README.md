@@ -2,6 +2,8 @@
 
 This project is a single-cycle implementation of a RISC-V microprocessor, developed using Verilog. This microarchiteecture will implement a subset of the RV32I instruction set architecture.
 
+A schematic of the implemented microarchitecture is available in this repository under "RISC-V Single-Cycle Shematic"
+
 # Supported instructions
 
 | Instruction | Type | Opcode | Description |
