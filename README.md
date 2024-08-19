@@ -9,7 +9,8 @@ A schematic of the implemented microarchitecture is available in this repository
 | Instruction | Type | Opcode | Description |
 |-------------|------|--------|-------------|
 | `lw`        |'I'   | 0000011|Load word in rd|
-| `lui`       |'U'   | 0110111|Load an immediate into upper 20-bits of rd|
+| `lui`       |'U'   | 0110111|Load immediate into upper 20-bits of rd|
+| `auipc`     |'U'   | 0010111|Add upper immediate to PC|
 | `sw`        |'S'   | 0100011|Store word in rd|
 | `add`       |'R'   | 0110011|Add two registers|
 | `sub`       |'R'   | 0110011|Subtract two registers|
@@ -61,19 +62,20 @@ This processors control unit currently contains the following control signals. N
 
 | Instruction | Op | RegWrite | ImmSrc | ALUSrc | MemWrite | ResultSrc | Branch | ALUOp | Jump |
 |-------------|-------|--|--|--|--|--|--|--|--|
-|lw           |0000011|1 |000|1 |0 |01|000 |00|0 |
-|lui          |0110111|1 |101|x |0 |11|000 |xx|0 |
-|sw           |0100011|0 |001|1 |1 |xx|000 |00|0 |
-|R-type       |0110011|1 |xxx|0 |0 |00|000 |10|0 |
-|I-type arithmetic ALU|0010011|1 |000|1 |0 |00|000 |10|0 |
-|I-type shift ALU     |0010011|1 |100|1 |0 |00|000 |10|0 |
-|beq          |1100011|0 |010|0 |0 |xx|001 |01|0 |
-|bne          |1100011|0 |010|0 |0 |xx|010 |01|0 |
-|bge          |1100011|0 |010|0 |0 |xx|011 |01|0 |
-|bgeu          |1100011|0 |010|0 |0 |xx|100 |01|0 |
-|blt          |1100011|0 |010|0 |0 |xx|101 |01|0 |
-|bltu          |1100011|0 |010|0 |0 |xx|110 |01|0 |
-|jal          |1101111|1 |011|x |0 |10|0 |xx|1 |
+|lw           |0000011|1 |000|1 |0 |001|000 |00|0 |
+|lui          |0110111|1 |101|x |0 |011|000 |xx|0 |
+|auipc        |0010111|1 |101|x |0 |100|000 |xx|0 |
+|sw           |0100011|0 |001|1 |1 |xxx|000 |00|0 |
+|R-type       |0110011|1 |xxx|0 |0 |000|000 |10|0 |
+|I-type arithmetic ALU|0010011|1 |000|1 |0 |000|000 |10|0 |
+|I-type shift ALU     |0010011|1 |100|1 |0 |000|000 |10|0 |
+|beq          |1100011|0 |010|0 |0 |xxx|001 |01|0 |
+|bne          |1100011|0 |010|0 |0 |xxx|010 |01|0 |
+|bge          |1100011|0 |010|0 |0 |xxx|011 |01|0 |
+|bgeu          |1100011|0 |010|0 |0 |xxx|100 |01|0 |
+|blt          |1100011|0 |010|0 |0 |xxx|101 |01|0 |
+|bltu          |1100011|0 |010|0 |0 |xxx|110 |01|0 |
+|jal          |1101111|1 |011|x |0 |010|0 |xx|1 |
 
 
 # ALU
