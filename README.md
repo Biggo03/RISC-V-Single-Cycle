@@ -9,6 +9,7 @@ A schematic of the implemented microarchitecture is available in this repository
 | Instruction | Type | Opcode | Description |
 |-------------|------|--------|-------------|
 | `lw`        |'I'   | 0000011|Load word in rd|
+| `lui`       |'U'   | 0110111|Load an immediate into upper 20-bits of rd|
 | `sw`        |'S'   | 0100011|Store word in rd|
 | `add`       |'R'   | 0110011|Add two registers|
 | `sub`       |'R'   | 0110011|Subtract two registers|
@@ -61,6 +62,7 @@ This processors control unit currently contains the following control signals. N
 | Instruction | Op | RegWrite | ImmSrc | ALUSrc | MemWrite | ResultSrc | Branch | ALUOp | Jump |
 |-------------|-------|--|--|--|--|--|--|--|--|
 |lw           |0000011|1 |000|1 |0 |01|000 |00|0 |
+|lui          |0110111|1 |101|x |0 |11|000 |xx|0 |
 |sw           |0100011|0 |001|1 |1 |xx|000 |00|0 |
 |R-type       |0110011|1 |xxx|0 |0 |00|000 |10|0 |
 |I-type arithmetic ALU|0010011|1 |000|1 |0 |00|000 |10|0 |
@@ -116,4 +118,6 @@ The immediate extension unit needs to extend immediates depending on the type of
 |010|{{20{Instr[31]}}, Instr[7], Instr[30:25], Instr[11:8], 1'b0}| B | 13-bit signed immediate extension|
 |011|{{12{Instr[31]}}, Instr[19:12], Instr[20], Instr[30:21], 1'b0}| J | 21-bit signed immediate extension|
 |100|{27'b0, Instr[24:20]}| I | 5-bit unsigned immediate extension|
+|101|{Instr[31:12], 12'b0}| U | Zero-extend bottom 12-bits of upper immediate|
+
 
