@@ -59,6 +59,7 @@ This processors control unit currently contains the following control signals. N
 |ALUControl|Determines the ALU operation|
 |WidthSrc|Determines the width of meaningful data in result signal|
 
+(*Note to self: WidthSrc dependant on funct3, as well as the opcode, this is why funct3 is routed to main decoder now, may want to add funct3 to main decoder truth table for clarity)
 
 # Main Decoder Truth Table
 
