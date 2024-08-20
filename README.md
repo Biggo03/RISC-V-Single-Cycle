@@ -35,6 +35,7 @@ A schematic of the implemented microarchitecture is available in this repository
 | `blt`       |'B'   | 1100011|Branches if less than|
 | `bltu`      |'B'   | 1100011|Branches if less than (unsigned)|
 | `jal`       |'J'   | 1101111|Jump and link|
+| `jalr`      |'I'   | 1101111|Jump and link register|
 | `addi`      |'I'   | 0010011|Add immediate|
 | `andi`      |'I'   | 0010011|AND a register and an immediate|
 | `ori`       |'I'   | 0010011|OR a register and an immediate|
@@ -65,33 +66,33 @@ This processors control unit currently contains the following control signals. N
 |ALUOp|Assists in determining ALU operation (further dependant on funct3 and funct7)|
 |ALUControl|Determines the ALU operation|
 |WidthSrc|Determines the width of meaningful data in result signal|
-
-(*Note to self: WidthSrc dependant on funct3, as well as the opcode, this is why funct3 is routed to main decoder now, may want to add funct3 to main decoder truth table for clarity)
+|PCBaseSrc|Determines what will be added to an immediate when calculating PCTarget|
 
 # Main Decoder Truth Table
 
-| Instruction         | Op    | funct3 | RegWrite | ImmSrc | ALUSrc | MemWrite | ResultSrc | Branch | ALUOp | WidthSrc | Jump |
-|---------------------|-------|--------|----------|--------|--------|----------|-----------|--------|-------|----------|------|
-|lw                   |0000011|010     |1         |000     |1       |0         |001        |000     |00     |000       |0     |
-|lh                   |0000011|001     |1         |000     |1       |0         |001        |000     |00     |101       |0     |
-|lhu                  |0000011|101     |1         |000     |1       |0         |001        |000     |00     |100       |0     |
-|lb                   |0000011|000     |1         |000     |1       |0         |001        |000     |00     |011       |0     |
-|lbu                  |0000011|100     |1         |000     |1       |0         |001        |000     |00     |010       |0     |
-|lui                  |0110111|xxx     |1         |101     |x       |0         |011        |000     |xx     |000       |0     |
-|auipc                |0010111|xxx     |1         |101     |x       |0         |100        |000     |xx     |000       |0     |
-|sw                   |0100011|010     |0         |001     |1       |1         |xxx        |000     |00     |000       |0     |
-|sh                   |0100011|001     |0         |001     |1       |1         |xxx        |000     |00     |10x       |0     |
-|sb                   |0100011|000     |0         |001     |1       |1         |xxx        |000     |00     |01x       |0     |
-|R-type               |0110011|op spec |1         |xxx     |0       |0         |000        |000     |10     |000       |0     |
-|I-type arithmetic ALU|0010011|op spec |1         |000     |1       |0         |000        |000     |10     |000       |0     |
-|I-type shift ALU     |0010011|op spec |1         |100     |1       |0         |000        |000     |10     |000       |0     |
-|beq                  |1100011|000     |0         |010     |0       |0         |xxx        |001     |01     |000       |0     |
-|bne                  |1100011|001     |0         |010     |0       |0         |xxx        |010     |01     |000       |0     |
-|bge                  |1100011|101     |0         |010     |0       |0         |xxx        |011     |01     |000       |0     |
-|bgeu                 |1100011|111     |0         |010     |0       |0         |xxx        |100     |01     |000       |0     |
-|blt                  |1100011|100     |0         |010     |0       |0         |xxx        |101     |01     |000       |0     |
-|bltu                 |1100011|110     |0         |010     |0       |0         |xxx        |110     |01     |000       |0     |
-|jal                  |1101111|xxx     |1         |011     |x       |0         |010        |xxx     |xx     |000       |1     |
+| Instruction         | Op    | funct3 | RegWrite | ImmSrc | ALUSrc | MemWrite | ResultSrc | Branch | ALUOp | WidthSrc | Jump | PCBaseSrc |
+|---------------------|-------|--------|----------|--------|--------|----------|-----------|--------|-------|----------|------|-|
+|lw                   |0000011|010     |1         |000     |1       |0         |001        |000     |00     |000       |0     |x|
+|lh                   |0000011|001     |1         |000     |1       |0         |001        |000     |00     |101       |0     |x|
+|lhu                  |0000011|101     |1         |000     |1       |0         |001        |000     |00     |100       |0     |x|
+|lb                   |0000011|000     |1         |000     |1       |0         |001        |000     |00     |011       |0     |x|
+|lbu                  |0000011|100     |1         |000     |1       |0         |001        |000     |00     |010       |0     |x|
+|lui                  |0110111|xxx     |1         |101     |x       |0         |011        |000     |xx     |000       |0     |x|
+|auipc                |0010111|xxx     |1         |101     |x       |0         |100        |000     |xx     |000       |0     |x|
+|sw                   |0100011|010     |0         |001     |1       |1         |xxx        |000     |00     |000       |0     |x|
+|sh                   |0100011|001     |0         |001     |1       |1         |xxx        |000     |00     |10x       |0     |x|
+|sb                   |0100011|000     |0         |001     |1       |1         |xxx        |000     |00     |01x       |0     |x|
+|R-type               |0110011|op spec |1         |xxx     |0       |0         |000        |000     |10     |000       |0     |x|
+|I-type arithmetic ALU|0010011|op spec |1         |000     |1       |0         |000        |000     |10     |000       |0     |x|
+|I-type shift ALU     |0010011|op spec |1         |100     |1       |0         |000        |000     |10     |000       |0     |x|
+|beq                  |1100011|000     |0         |010     |0       |0         |xxx        |001     |01     |000       |0     |1|
+|bne                  |1100011|001     |0         |010     |0       |0         |xxx        |010     |01     |000       |0     |1|
+|bge                  |1100011|101     |0         |010     |0       |0         |xxx        |011     |01     |000       |0     |1|
+|bgeu                 |1100011|111     |0         |010     |0       |0         |xxx        |100     |01     |000       |0     |1|
+|blt                  |1100011|100     |0         |010     |0       |0         |xxx        |101     |01     |000       |0     |1|
+|bltu                 |1100011|110     |0         |010     |0       |0         |xxx        |110     |01     |000       |0     |1|
+|jal                  |1101111|000     |1         |011     |x       |0         |010        |xxx     |xx     |000       |1     |1|
+|jalr                 |1101111|xxx     |1         |011     |x       |0         |010        |xxx     |xx     |000       |1     |0|
 
 
 # ALU
@@ -100,7 +101,8 @@ The ALU implements add, subtract, and, or, xor, slt, sltu, sll, srl, and sra. Al
 
 | Instructions | ALUOp | funct3 | {op[5], funct7[5] | ALUControl |
 |--------------|-------|--------|-------------------|-------------|
-|lw, sw        |   00  | x      | x                 | 0000        |
+|S-Type instructions|00| x      | x                 | 0000        |
+|Load instructions  |00| x      | x                 | 0000        |
 |B-type instructions|01| x      | x                 | 0001        |
 |add, addi     |   10  | 000    | 00, 01, 10        | 0000        |
 |sub           |   10  | 000    | 11                | 0001        |
@@ -152,6 +154,3 @@ The following table describes the behaviour of width setting modules
 |100       |16-bits unsigned|
 |011       |8-bits signed|
 |010       |8-bits unsigned|
-
-
-
