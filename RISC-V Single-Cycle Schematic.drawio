@@ -213,8 +213,8 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="kE1xLlnzsojC-IhX8l6a-253" value="WidthSrc" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="kE1xLlnzsojC-IhX8l6a-60">
-          <mxGeometry x="155" y="20" width="70" height="30" as="geometry" />
+        <mxCell id="kE1xLlnzsojC-IhX8l6a-253" value="WidthSrc[1:0]" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="kE1xLlnzsojC-IhX8l6a-60">
+          <mxGeometry x="150" y="20" width="100" height="30" as="geometry" />
         </mxCell>
         <mxCell id="kE1xLlnzsojC-IhX8l6a-68" value="19:15" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
           <mxGeometry x="730" y="723" width="50" height="30" as="geometry" />
@@ -888,7 +888,7 @@
         <mxCell id="kE1xLlnzsojC-IhX8l6a-255" value="" style="shape=manualInput;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="1960" y="770" width="120" height="48" as="geometry" />
         </mxCell>
-        <mxCell id="kE1xLlnzsojC-IhX8l6a-256" value="&lt;b&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;Reduce&lt;/font&gt;&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="kE1xLlnzsojC-IhX8l6a-256" value="&lt;span style=&quot;font-size: 15px;&quot;&gt;&lt;b&gt;Reduce&lt;/b&gt;&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
           <mxGeometry x="1990" y="788" width="80" height="30" as="geometry" />
         </mxCell>
         <mxCell id="kE1xLlnzsojC-IhX8l6a-257" value="" style="endArrow=none;html=1;rounded=0;exitX=0.852;exitY=-0.008;exitDx=0;exitDy=0;exitPerimeter=0;strokeColor=#3333FF;" edge="1" parent="1">
