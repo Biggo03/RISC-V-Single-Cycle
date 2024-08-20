@@ -9,15 +9,20 @@ A schematic of the implemented microarchitecture is available in this repository
 | Instruction | Type | Opcode | Description |
 |-------------|------|--------|-------------|
 | `lw`        |'I'   | 0000011|Load word in rd|
+| `lh`        |'I'   | 0000011|Load signed halfword in rd|
+| `lhu`       |'I'   | 0000011|Load unsigned halfword in rd|
 | `lb`        |'I'   | 0000011|Load signed byte in rd|
 | `lbu`       |'I'   | 0000011|Load unsigned byte in rd|
 | `lui`       |'U'   | 0110111|Load immediate into upper 20-bits of rd|
 | `auipc`     |'U'   | 0010111|Add upper immediate to PC|
-| `sw`        |'S'   | 0100011|Store word in rd|
+| `sw`        |'S'   | 0100011|Store word|
+| `sh`        |'S'   | 0100011|Store halfword|
+| `sb`        |'S'   | 0100011|Store byte|
 | `add`       |'R'   | 0110011|Add two registers|
 | `sub`       |'R'   | 0110011|Subtract two registers|
 | `and`       |'R'   | 0110011|AND two registers|
 | `or`        |'R'   | 0110011|OR two registers|
+| `xor`       |'R'   | 0110011|XOR two registers|
 | `slt`       |'R'   | 0110011|Sets if rs1 < rs2|
 | `sltu`      |'R'   | 0110011|Sets if rs1 < rs2 in unsigned representation|
 | `sll`       |'R'   | 0110011|Shift left logical|
@@ -33,6 +38,7 @@ A schematic of the implemented microarchitecture is available in this repository
 | `addi`      |'I'   | 0010011|Add immediate|
 | `andi`      |'I'   | 0010011|AND a register and an immediate|
 | `ori`       |'I'   | 0010011|OR a register and an immediate|
+| `xori`      |'I'   | 0010011|XOR a register and an immediate|
 | `slli`      |'I'   | 0010011|Shift left logical by an immediate|
 | `srli`      |'I'   | 0010011|Shift right logical by an immediate|
 | `srai`      |'I'   | 0010011|Arithmetic shift right by an immediate|
@@ -66,22 +72,26 @@ This processors control unit currently contains the following control signals. N
 
 | Instruction         | Op    | funct3 | RegWrite | ImmSrc | ALUSrc | MemWrite | ResultSrc | Branch | ALUOp | WidthSrc | Jump |
 |---------------------|-------|--------|----------|--------|--------|----------|-----------|--------|-------|----------|------|
-|lw                   |0000011|010     |1         |000     |1       |0         |001        |000     |00     |00        |0     |
-|lb                   |0000011|000     |1         |000     |1       |0         |001        |000     |00     |01        |0     |
-|lbu                  |0000011|100     |1         |000     |1       |0         |001        |000     |00     |10        |0     |
-|lui                  |0110111|xxx     |1         |101     |x       |0         |011        |000     |xx     |00        |0     |
-|auipc                |0010111|xxx     |1         |101     |x       |0         |100        |000     |xx     |00        |0     |
-|sw                   |0100011|010     |0         |001     |1       |1         |xxx        |000     |00     |00        |0     |
-|R-type               |0110011|op spec |1         |xxx     |0       |0         |000        |000     |10     |00        |0     |
-|I-type arithmetic ALU|0010011|op spec |1         |000     |1       |0         |000        |000     |10     |00        |0     |
-|I-type shift ALU     |0010011|op spec |1         |100     |1       |0         |000        |000     |10     |00        |0     |
-|beq                  |1100011|000     |0         |010     |0       |0         |xxx        |001     |01     |00        |0     |
-|bne                  |1100011|001     |0         |010     |0       |0         |xxx        |010     |01     |00        |0     |
-|bge                  |1100011|101     |0         |010     |0       |0         |xxx        |011     |01     |00        |0     |
-|bgeu                 |1100011|111     |0         |010     |0       |0         |xxx        |100     |01     |00        |0     |
-|blt                  |1100011|100     |0         |010     |0       |0         |xxx        |101     |01     |00        |0     |
-|bltu                 |1100011|110     |0         |010     |0       |0         |xxx        |110     |01     |00        |0     |
-|jal                  |1101111|xxx     |1         |011     |x       |0         |010        |xxx     |xx     |00        |1     |
+|lw                   |0000011|010     |1         |000     |1       |0         |001        |000     |00     |000       |0     |
+|lh                   |0000011|001     |1         |000     |1       |0         |001        |000     |00     |101       |0     |
+|lhu                  |0000011|101     |1         |000     |1       |0         |001        |000     |00     |100       |0     |
+|lb                   |0000011|000     |1         |000     |1       |0         |001        |000     |00     |011       |0     |
+|lbu                  |0000011|100     |1         |000     |1       |0         |001        |000     |00     |010       |0     |
+|lui                  |0110111|xxx     |1         |101     |x       |0         |011        |000     |xx     |000       |0     |
+|auipc                |0010111|xxx     |1         |101     |x       |0         |100        |000     |xx     |000       |0     |
+|sw                   |0100011|010     |0         |001     |1       |1         |xxx        |000     |00     |000       |0     |
+|sh                   |0100011|001     |0         |001     |1       |1         |xxx        |000     |00     |10x       |0     |
+|sb                   |0100011|000     |0         |001     |1       |1         |xxx        |000     |00     |01x       |0     |
+|R-type               |0110011|op spec |1         |xxx     |0       |0         |000        |000     |10     |000       |0     |
+|I-type arithmetic ALU|0010011|op spec |1         |000     |1       |0         |000        |000     |10     |000       |0     |
+|I-type shift ALU     |0010011|op spec |1         |100     |1       |0         |000        |000     |10     |000       |0     |
+|beq                  |1100011|000     |0         |010     |0       |0         |xxx        |001     |01     |000       |0     |
+|bne                  |1100011|001     |0         |010     |0       |0         |xxx        |010     |01     |000       |0     |
+|bge                  |1100011|101     |0         |010     |0       |0         |xxx        |011     |01     |000       |0     |
+|bgeu                 |1100011|111     |0         |010     |0       |0         |xxx        |100     |01     |000       |0     |
+|blt                  |1100011|100     |0         |010     |0       |0         |xxx        |101     |01     |000       |0     |
+|bltu                 |1100011|110     |0         |010     |0       |0         |xxx        |110     |01     |000       |0     |
+|jal                  |1101111|xxx     |1         |011     |x       |0         |010        |xxx     |xx     |000       |1     |
 
 
 # ALU
@@ -97,6 +107,7 @@ The ALU implements add, subtract, and, or, xor, slt, sltu, sll, srl, and sra. Al
 |slt           |   10  | 010    | x                 | 0101        |
 |sltu          |   10  | 011    | x                 | 0110        |
 |or, ori       |   10  | 110    | x                 | 0011        |
+|xor, xori     |   10  | 100    | x                 | 0100        |
 |and, andi     |   10  | 111    | x                 | 0010        |
 |sll, slli     |   10  | 001    | 00, 10            | 0111        |
 |srl, srli     |   10  | 101    | 00, 10            | 1000        |
@@ -127,5 +138,20 @@ The immediate extension unit needs to extend immediates depending on the type of
 |011|{{12{Instr[31]}}, Instr[19:12], Instr[20], Instr[30:21], 1'b0}| J | 21-bit signed immediate extension|
 |100|{27'b0, Instr[24:20]}| I | 5-bit unsigned immediate extension|
 |101|{Instr[31:12], 12'b0}| U | Zero-extend bottom 12-bits of upper immediate|
+
+
+# Width Logic
+The WidthSrc signal controls what width of data is either stored or loaded from data memory. The signal is sent both directly to the data memory to handle store instructions, as well as to an extension unit (called "reduce") right after data memory. This will reduce the hardware complexity of the main decoder because funct3 defines the same widths for both the store and load instructions, meaning hardware should be able to be reused.
+
+The following table describes the behaviour of width setting modules
+
+| WidthSrc | width |
+|----------|-------|
+|000       |32-bits|
+|101       |16-bits signed|
+|100       |16-bits unsigned|
+|011       |8-bits signed|
+|010       |8-bits unsigned|
+
 
 
