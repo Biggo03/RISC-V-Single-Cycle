@@ -9,7 +9,7 @@ A schematic of the implemented microarchitecture is available in this repository
 | Instruction | Type | Opcode | Description |
 |-------------|------|--------|-------------|
 | `lw`        |'I'   | 0000011|Load word in rd|
-| `lbu`       |'I'   | 0000011|Load signed byte in rd|
+| `lb`        |'I'   | 0000011|Load signed byte in rd|
 | `lbu`       |'I'   | 0000011|Load unsigned byte in rd|
 | `lui`       |'U'   | 0110111|Load immediate into upper 20-bits of rd|
 | `auipc`     |'U'   | 0010111|Add upper immediate to PC|
