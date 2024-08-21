@@ -81,7 +81,6 @@ This processors control unit currently contains the following control signals. N
 |sb                   |0100011|000     |0         |001     |1       |1         |xxx        |000     |00     |x01       |0     |x|
 |R-type               |0110011|op spec |1         |xxx     |0       |0         |000        |000     |10     |000       |0     |x|
 |I-type arithmetic ALU|0010011|op spec |1         |000     |1       |0         |000        |000     |10     |000       |0     |x|
-|I-type shift ALU     |0010011|op spec |1         |100     |1       |0         |000        |000     |10     |000       |0     |x|
 |beq                  |1100011|000     |0         |010     |0       |0         |xxx        |001     |01     |xxx       |0     |0|
 |bne                  |1100011|001     |0         |010     |0       |0         |xxx        |010     |01     |xxx       |0     |0|
 |bge                  |1100011|101     |0         |010     |0       |0         |xxx        |011     |01     |xxx       |0     |0|
@@ -134,7 +133,6 @@ The immediate extension unit needs to extend immediates depending on the type of
 |001|{{20{Instr[31]}}, Instr[31:25], Instr[11:7]}| S | 12-bit signed immediate extension|
 |010|{{20{Instr[31]}}, Instr[7], Instr[30:25], Instr[11:8], 1'b0}| B | 13-bit signed immediate extension|
 |011|{{12{Instr[31]}}, Instr[19:12], Instr[20], Instr[30:21], 1'b0}| J | 21-bit signed immediate extension|
-|100|{27'b0, Instr[24:20]}| I | 5-bit unsigned immediate extension|
 |101|{Instr[31:12], 12'b0}| U | Zero-extend bottom 12-bits of upper immediate|
 
 
