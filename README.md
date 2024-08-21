@@ -92,7 +92,7 @@ This processors control unit currently contains the following control signals. N
 |blt                  |1100011|100     |0         |010     |0       |0         |xxx        |101     |01     |000       |0     |1|
 |bltu                 |1100011|110     |0         |010     |0       |0         |xxx        |110     |01     |000       |0     |1|
 |jal                  |1101111|000     |1         |011     |x       |0         |010        |xxx     |xx     |000       |1     |1|
-|jalr                 |1101111|xxx     |1         |011     |x       |0         |010        |xxx     |xx     |000       |1     |0|
+|jalr                 |1100111|xxx     |1         |011     |x       |0         |010        |xxx     |xx     |000       |1     |0|
 
 
 # ALU
