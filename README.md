@@ -70,15 +70,15 @@ This processors control unit currently contains the following control signals. N
 | Instruction         | Op    | funct3 | RegWrite | ImmSrc | ALUSrc | MemWrite | ResultSrc | Branch | ALUOp | WidthSrc | Jump | PCBaseSrc |
 |---------------------|-------|--------|----------|--------|--------|----------|-----------|--------|-------|----------|------|-|
 |lw                   |0000011|010     |1         |000     |1       |0         |001        |000     |00     |000       |0     |x|
-|lh                   |0000011|001     |1         |000     |1       |0         |001        |000     |00     |101       |0     |x|
-|lhu                  |0000011|101     |1         |000     |1       |0         |001        |000     |00     |100       |0     |x|
-|lb                   |0000011|000     |1         |000     |1       |0         |001        |000     |00     |011       |0     |x|
-|lbu                  |0000011|100     |1         |000     |1       |0         |001        |000     |00     |010       |0     |x|
+|lh                   |0000011|001     |1         |000     |1       |0         |001        |000     |00     |110       |0     |x|
+|lhu                  |0000011|101     |1         |000     |1       |0         |001        |000     |00     |010       |0     |x|
+|lb                   |0000011|000     |1         |000     |1       |0         |001        |000     |00     |101       |0     |x|
+|lbu                  |0000011|100     |1         |000     |1       |0         |001        |000     |00     |001       |0     |x|
 |lui                  |0110111|xxx     |1         |101     |x       |0         |011        |000     |xx     |000       |0     |x|
 |auipc                |0010111|xxx     |1         |101     |x       |0         |100        |000     |xx     |000       |0     |x|
 |sw                   |0100011|010     |0         |001     |1       |1         |xxx        |000     |00     |000       |0     |x|
-|sh                   |0100011|001     |0         |001     |1       |1         |xxx        |000     |00     |10x       |0     |x|
-|sb                   |0100011|000     |0         |001     |1       |1         |xxx        |000     |00     |01x       |0     |x|
+|sh                   |0100011|001     |0         |001     |1       |1         |xxx        |000     |00     |x10       |0     |x|
+|sb                   |0100011|000     |0         |001     |1       |1         |xxx        |000     |00     |x01       |0     |x|
 |R-type               |0110011|op spec |1         |xxx     |0       |0         |000        |000     |10     |000       |0     |x|
 |I-type arithmetic ALU|0010011|op spec |1         |000     |1       |0         |000        |000     |10     |000       |0     |x|
 |I-type shift ALU     |0010011|op spec |1         |100     |1       |0         |000        |000     |10     |000       |0     |x|
@@ -98,7 +98,7 @@ The ALU implements add, subtract, and, or, xor, slt, sltu, sll, srl, and sra. Al
 | Instructions | ALUOp | funct3 | {op[5], funct7[5] | ALUControl |
 |--------------|-------|--------|-------------------|-------------|
 |S-Type instructions|00| x      | x                 | 0000        |
-|Load instructions  |00| x      | x                 | 0000        |
+|I-type loads  |00     | x      | x                 | 0000        |
 |B-type instructions|01| x      | x                 | 0001        |
 |add, addi     |   10  | 000    | 00, 01, 10        | 0000        |
 |sub           |   10  | 000    | 11                | 0001        |
@@ -146,7 +146,7 @@ The following table describes the behaviour of width setting modules
 | WidthSrc | width |
 |----------|-------|
 |000       |32-bits|
-|101       |16-bits signed|
-|100       |16-bits unsigned|
-|011       |8-bits signed|
-|010       |8-bits unsigned|
+|110       |16-bits signed|
+|010       |16-bits unsigned|
+|101       |8-bits signed|
+|001       |8-bits unsigned|
