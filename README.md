@@ -44,9 +44,6 @@ A schematic of the implemented microarchitecture is available in this repository
 | `srli`      |'I'   | 0010011|Shift right logical by an immediate|
 | `srai`      |'I'   | 0010011|Arithmetic shift right by an immediate|
 
-
-
-
 # Memory Interface
 This design assumes a memory that can be accessed in a single-cycle, and uses both a data memory, and an instruction memory.
 
@@ -96,7 +93,6 @@ This processors control unit currently contains the following control signals. N
 
 
 # ALU
-
 The ALU implements add, subtract, and, or, xor, slt, sltu, sll, srl, and sra. All extensions are handeled by an extension unit.
 
 | Instructions | ALUOp | funct3 | {op[5], funct7[5] | ALUControl |
@@ -143,7 +139,7 @@ The immediate extension unit needs to extend immediates depending on the type of
 
 
 # Width Logic
-The WidthSrc signal controls what width of data is either stored or loaded from data memory. The signal is sent both directly to the data memory to handle store instructions, as well as to an extension unit (called "reduce") right after data memory. This will reduce the hardware complexity of the main decoder because funct3 defines the same widths for both the store and load instructions, meaning hardware should be able to be reused.
+The WidthSrc signal controls what width of data is either stored or loaded from data memory. The signal is sent both directly to the data memory to handle store instructions, as well as to an extension unit (called "reduce") right after data memory.
 
 The following table describes the behaviour of width setting modules
 
