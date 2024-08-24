@@ -973,8 +973,8 @@
         <mxCell id="kE1xLlnzsojC-IhX8l6a-280" value="PCBaseSrc" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
           <mxGeometry x="2510" y="728" width="90" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="kE1xLlnzsojC-IhX8l6a-281" value="TempResult" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
-          <mxGeometry x="1870" y="779" width="90" height="30" as="geometry" />
+        <mxCell id="kE1xLlnzsojC-IhX8l6a-281" value="BaseResult" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="1875" y="779" width="80" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
