@@ -106,7 +106,7 @@ The ALU implements add, subtract, and, or, xor, slt, sltu, sll, srl, and sra. Al
 |or, ori       |   10  | 110    | x                 | 0011        |
 |xor, xori     |   10  | 100    | x                 | 0100        |
 |and, andi     |   10  | 111    | x                 | 0010        |
-|sll, slli     |   10  | 001    | 00, 10            | 0111        |
+|sll, slli     |   10  | 001    | x                 | 0111        |
 |srl, srli     |   10  | 101    | 00, 10            | 0000        |
 |sra, srai     |   10  | 101    | 11, 01            | 0001        |
 
