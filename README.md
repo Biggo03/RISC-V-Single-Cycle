@@ -96,33 +96,33 @@ The ALU implements add, subtract, and, or, xor, slt, sltu, sll, srl, and sra. Al
 
 | Instructions | ALUOp | funct3 | {op[5], funct7[5] | ALUControl |
 |--------------|-------|--------|-------------------|-------------|
-|S-Type instructions|00| x      | x                 | 0000        |
-|I-type loads  |00     | x      | x                 | 0000        |
-|B-type instructions|01| x      | x                 | 0001        |
-|add, addi     |   10  | 000    | 00, 01, 10        | 0000        |
-|sub           |   10  | 000    | 11                | 0001        |
+|S-Type instructions|00| x      | x                 | 1000        |
+|I-type loads  |00     | x      | x                 | 1000        |
+|B-type instructions|01| x      | x                 | 1001        |
+|add, addi     |   10  | 000    | 00, 01, 10        | 1000        |
+|sub           |   10  | 000    | 11                | 1001        |
 |slt           |   10  | 010    | x                 | 0101        |
 |sltu          |   10  | 011    | x                 | 0110        |
 |or, ori       |   10  | 110    | x                 | 0011        |
 |xor, xori     |   10  | 100    | x                 | 0100        |
 |and, andi     |   10  | 111    | x                 | 0010        |
-|sll, slli     |   10  | 001    | 00, 10            | 0111        |
-|srl, srli     |   10  | 101    | 00, 10            | 1000        |
-|sra, srai     |   10  | 101    | 11, 01            | 1001        |
+|sll, slli     |   10  | 001    | x                 | 0111        |
+|srl, srli     |   10  | 101    | 00, 10            | 0000        |
+|sra, srai     |   10  | 101    | 11, 01            | 0001        |
 
 Note that the ALU control has the ALU perform the following operations:
 | ALUControl | Operation |
 |------------|-----------|
-|0000|add|
-|0001|subtract|
+|0000|shift right logical (srl)|
+|0001|shift right arithmetic (sra)|
 |0010|and|
 |0011|or|
 |0100|xor|
 |0101|set less than (slt)|
 |0110|set less than unsigned (sltu)|
 |0111|shift left logical (sll)|
-|1000|shift right logical (srl)|
-|1001|shift right arithmetic (sra)|
+|1000|add|
+|1001|subtract|
 
 # Immediate Extension
 The immediate extension unit needs to extend immediates depending on the type of instruction the immediate recieves. The type of extension is controlled by the signal ImmSrc. Note that this extension unit takes advantage of the fact that the most significant bit of all immediates is always held in bit 31 of instr. The following table describes the extension units behaviour.
