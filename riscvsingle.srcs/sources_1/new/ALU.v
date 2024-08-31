@@ -9,13 +9,14 @@
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
-// Description: 
+// Description: Take control signal ALUControl, and does the corrosponding operation.
+//              C and V flags are only updated on addition or subtraction. N and Z flags always updated.
 // 
 // Dependencies: 
 // 
 // Revision:
 // Revision 0.01 - File Created
-// Additional Comments:
+// Additional Comments: This module supports: addition, subtraction, AND, OR, XOR, SLT, SLTU, Logical shift left, Logical shift right, and Arithmetic shift right
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -38,21 +39,14 @@ module ALU(input [3:0] ALUControl,
         
         //Operation Logic
         case(ALUControl)
-            
-            //Addition
-            4'b1000: {Cout, TempResult} = A + B;
-            
-            //Subtraction
-            4'b1001: {Cout, TempResult} = A - B;
-            
-            //AND
-            4'b0010: TempResult = A & B;
-            
-            //OR
-            4'b0011: TempResult = A | B;
-            
-            //XOR
-            4'b0100: TempResult = A ^ B;
+            4'b1000: {Cout, TempResult} = A + B; //Addition
+            4'b1001: {Cout, TempResult} = A - B; //Subtraction
+            4'b0010: TempResult = A & B; //AND
+            4'b0011: TempResult = A | B; //OR
+            4'b0100: TempResult = A ^ B; //XOR
+            4'b0111: TempResult = A << B; //Shift Left Logical
+            4'b0000: TempResult = A >> B; //Shift Right Logical
+            4'b0001: TempResult = A >>>B; //Shift Right Arithmetic
             
             //SLT
             4'b0101: begin
@@ -62,7 +56,7 @@ module ALU(input [3:0] ALUControl,
                     if (VControl ^ TempResult[31]) TempResult = 32'b1;
                     else TempResult = 32'b0;
                 
-                end
+            end
             
             //SLTU
             4'b0110: begin
@@ -73,19 +67,9 @@ module ALU(input [3:0] ALUControl,
                     if (~Cout) TempResult = 32'b1;
                     else TempResult = 32'b0;
                 
-                end
-                
-            //Shift Left Logical
-            4'b0111: TempResult = A << B;
+            end
             
-            //Shift Right Logical
-            4'b0000: TempResult = A >> B;
-            
-            //Shift Right Arithmetic
-            4'b0001: TempResult = A >>>B;
-            
-            //Undefined case
-            default: TempResult = 32'bx;
+            default: TempResult = 32'bx; //Undefined case
         
         endcase
         
