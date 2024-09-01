@@ -35,7 +35,7 @@ A schematic of the implemented microarchitecture is available in this repository
 | `blt`       |'B'   | 1100011|Branches if less than|
 | `bltu`      |'B'   | 1100011|Branches if less than (unsigned)|
 | `jal`       |'J'   | 1101111|Jump and link|
-| `jalr`      |'I'   | 1101111|Jump and link register|
+| `jalr`      |'I'   | 1100111|Jump and link register|
 | `addi`      |'I'   | 0010011|Add immediate|
 | `andi`      |'I'   | 0010011|AND a register and an immediate|
 | `ori`       |'I'   | 0010011|OR a register and an immediate|
