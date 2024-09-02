@@ -58,7 +58,6 @@ This processors control unit currently contains the following control signals. N
 |MemWrite|Determines if data memory is to be written to, active high|
 |ResultSrc|Determines what value is to be written back to RF|
 |BranchOP|Assists in determining if a branch is to occur (further dependant on funct3 and flags)|
-|Branch|Determines value passed to PCSrc|
 |PCSrc|Determines if branch/jump is actually to take place| 
 |ALUOp|Assists in determining ALU operation (further dependant on funct3 and funct7)|
 |ALUControl|Determines the ALU operation|
