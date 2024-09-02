@@ -72,7 +72,7 @@ The main decoder takes in an opcode, and generates the majority of control signa
 | Instruction         | Op    | RegWrite | ImmSrc | ALUSrc | MemWrite | ResultSrc | BranchOp | ALUOp | WidthOp | PCBaseSrc |
 |---------------------|-------|----------|--------|--------|----------|-----------|----------|-------|---------|-|
 |R-type               |0110011|1         |xxx     |0       |0         |000        |00        |10     |0        |x|
-|I-type arithmetic ALU|0010011|1         |000     |1       |0         |000        |00        |10     |0        |x|
+|I-type ALU           |0010011|1         |000     |1       |0         |000        |00        |10     |0        |x|
 |I-type Load          |0000011|1         |000     |1       |0         |001        |00        |00     |1        |x|
 |S-type               |0100011|0         |001     |1       |1         |xxx        |00        |00     |1        |x|
 |B-type               |1100011|0         |010     |0       |0         |xxx        |10        |01     |x        |0|
