@@ -86,16 +86,18 @@ I decided to implement an extra decoder in order to deal with branching logic. T
 
 The truth table for determining Branch, as well as the flag operation that is performed is described as follows:
 
-| Instructions             | BranchOp | funct3 | Branch | Flag Operation |
-|--------------------------|----------|--------|--------|----------------|
-|Non-branching Instructions|00        |xxx     |000     |N/A             |
-|Jumps                     |01        |xxx     |111     |N/A             |
-|beq                       |10        |000     |001     |Z               |
-|bne                       |10        |001     |010     |Z'              |
-|bge                       |10        |101     |011     |(N^V)'          |
-|bgeu                      |10        |111     |100     |C               |
-|blt                       |10        |100     |101     |N^V             |
-|bltu                      |10        |110     |110     |C'              |
+| Instructions             | BranchOp | funct3 | Branch | Flag Operation | PCSrc |
+|--------------------------|----------|--------|--------|----------------|-------|
+|Non-branching Instructions|00        |xxx     |000     |0               |0      |
+|Jumps                     |01        |xxx     |111     |1               |1      |
+|beq                       |10        |000     |001     |Z               |FD     |
+|bne                       |10        |001     |010     |Z'              |FD     |
+|bge                       |10        |101     |011     |(N^V)'          |FD     |
+|bgeu                      |10        |111     |100     |C               |FD     |
+|blt                       |10        |100     |101     |N^V             |FD     |
+|bltu                      |10        |110     |110     |C'              |FD     |
+
+Note that within this table. FD = flag dependant, meaning it depends on the result of the flag operation. If the flag operation results in 1 (or true), then PCSrc will also be 1, and vice versa.
 
 # Width Decoder
 This decoder is used to determine the width of data stored or fetched from memory. It takes a control signal from the main decoder, WidthOp, as well as funct3 in order to determine what width of data is to be either stored or loaded to/from data memory. The resulting control signal WidthSrc is sent both directly to the data memory to handle store instructions, as well as to an extension unit (called "reduce") right after data memory.
