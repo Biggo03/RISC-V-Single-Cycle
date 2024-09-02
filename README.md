@@ -66,7 +66,8 @@ This processors control unit currently contains the following control signals. N
 |WidthSrc|Determines the width of meaningful data in result signal|
 |PCBaseSrc|Determines what will be added to an immediate when calculating PCTarget|
 
-# Main Decoder Truth Table
+# Main Decoder
+The main decoder takes in an opcode, and generates the majority of control signals, as well as signals that assist in the decoding done by other more specialized decoding modules.
 
 | Instruction         | Op    | RegWrite | ImmSrc | ALUSrc | MemWrite | ResultSrc | BranchOp | ALUOp | WidthOp | PCBaseSrc |
 |---------------------|-------|----------|--------|--------|----------|-----------|----------|-------|---------|-|
