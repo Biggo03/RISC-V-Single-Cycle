@@ -71,11 +71,6 @@ The main decoder takes in an opcode, and generates the majority of control signa
 
 | Instruction         | Op    | RegWrite | ImmSrc | ALUSrc | MemWrite | ResultSrc | BranchOp | ALUOp | WidthOp | PCBaseSrc |
 |---------------------|-------|----------|--------|--------|----------|-----------|----------|-------|---------|-|
-|lw                   |0000011|1         |000     |1       |0         |001        |00        |00     |1        |x|
-|lh                   |0000011|1         |000     |1       |0         |001        |00        |00     |1        |x|
-|lhu                  |0000011|1         |000     |1       |0         |001        |00        |00     |1        |x|
-|lb                   |0000011|1         |000     |1       |0         |001        |00        |00     |1        |x|
-|lbu                  |0000011|1         |000     |1       |0         |001        |00        |00     |1        |x|
 |lui                  |0110111|1         |101     |x       |0         |011        |00        |xx     |0        |x|
 |auipc                |0010111|1         |101     |x       |0         |100        |00        |xx     |0        |0|
 |sw                   |0100011|0         |001     |1       |1         |xxx        |00        |00     |0        |x|
@@ -83,6 +78,7 @@ The main decoder takes in an opcode, and generates the majority of control signa
 |sb                   |0100011|0         |001     |1       |1         |xxx        |00        |00     |1        |x|
 |R-type               |0110011|1         |xxx     |0       |0         |000        |00        |10     |0        |x|
 |I-type arithmetic ALU|0010011|1         |000     |1       |0         |000        |00        |10     |0        |x|
+|I-type Load          |0000011|1         |000     |1       |0         |001        |00        |00     |1        |x|
 |beq                  |1100011|0         |010     |0       |0         |xxx        |10        |01     |x        |0|
 |bne                  |1100011|0         |010     |0       |0         |xxx        |10        |01     |x        |0|
 |bge                  |1100011|0         |010     |0       |0         |xxx        |10        |01     |x        |0|
