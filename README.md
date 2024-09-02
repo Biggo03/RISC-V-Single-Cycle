@@ -57,9 +57,9 @@ This processors control unit currently contains the following control signals. N
 |ALUSrc|Determines B operand ALU is to recieve|
 |MemWrite|Determines if data memory is to be written to, active high|
 |ResultSrc|Determines what value is to be written back to RF|
-|Branch|Determine if an instruction MAY branch, used in conjunction with flags|
-|PCSrc|Determines if branch/jump is actually to take place|
-|jump|Asserts PCSrc, ensuring a jump takes place|
+|BranchOP|Assists in determining if a branch is to occur (further dependant on funct3 and flags)|
+|Branch|Determines value passed to PCSrc|
+|PCSrc|Determines if branch/jump is actually to take place| 
 |ALUOp|Assists in determining ALU operation (further dependant on funct3 and funct7)|
 |ALUControl|Determines the ALU operation|
 |WidthSrc|Determines the width of meaningful data in result signal|
@@ -67,30 +67,68 @@ This processors control unit currently contains the following control signals. N
 
 # Main Decoder Truth Table
 
-| Instruction         | Op    | funct3 | RegWrite | ImmSrc | ALUSrc | MemWrite | ResultSrc | Branch | ALUOp | WidthSrc | Jump | PCBaseSrc |
-|---------------------|-------|--------|----------|--------|--------|----------|-----------|--------|-------|----------|------|-|
-|lw                   |0000011|010     |1         |000     |1       |0         |001        |000     |00     |000       |0     |x|
-|lh                   |0000011|001     |1         |000     |1       |0         |001        |000     |00     |010       |0     |x|
-|lhu                  |0000011|101     |1         |000     |1       |0         |001        |000     |00     |110       |0     |x|
-|lb                   |0000011|000     |1         |000     |1       |0         |001        |000     |00     |001       |0     |x|
-|lbu                  |0000011|100     |1         |000     |1       |0         |001        |000     |00     |101       |0     |x|
-|lui                  |0110111|xxx     |1         |101     |x       |0         |011        |000     |xx     |000       |0     |x|
-|auipc                |0010111|xxx     |1         |101     |x       |0         |100        |000     |xx     |000       |0     |0|
-|sw                   |0100011|010     |0         |001     |1       |1         |xxx        |000     |00     |000       |0     |x|
-|sh                   |0100011|001     |0         |001     |1       |1         |xxx        |000     |00     |x10       |0     |x|
-|sb                   |0100011|000     |0         |001     |1       |1         |xxx        |000     |00     |x01       |0     |x|
-|R-type               |0110011|op spec |1         |xxx     |0       |0         |000        |000     |10     |000       |0     |x|
-|I-type arithmetic ALU|0010011|op spec |1         |000     |1       |0         |000        |000     |10     |000       |0     |x|
-|beq                  |1100011|000     |0         |010     |0       |0         |xxx        |001     |01     |xxx       |0     |0|
-|bne                  |1100011|001     |0         |010     |0       |0         |xxx        |010     |01     |xxx       |0     |0|
-|bge                  |1100011|101     |0         |010     |0       |0         |xxx        |011     |01     |xxx       |0     |0|
-|bgeu                 |1100011|111     |0         |010     |0       |0         |xxx        |100     |01     |xxx       |0     |0|
-|blt                  |1100011|100     |0         |010     |0       |0         |xxx        |101     |01     |xxx       |0     |0|
-|bltu                 |1100011|110     |0         |010     |0       |0         |xxx        |110     |01     |xxx       |0     |0|
-|jal                  |1101111|000     |1         |011     |x       |0         |010        |xxx     |xx     |000       |1     |0|
-|jalr                 |1100111|xxx     |1         |000     |x       |0         |010        |xxx     |xx     |000       |1     |1|
+| Instruction         | Op    | RegWrite | ImmSrc | ALUSrc | MemWrite | ResultSrc | BranchOp | ALUOp | WidthOp | PCBaseSrc |
+|---------------------|-------|----------|--------|--------|----------|-----------|----------|-------|---------|-|
+|lw                   |0000011|1         |000     |1       |0         |001        |00        |00     |1        |x|
+|lh                   |0000011|1         |000     |1       |0         |001        |00        |00     |1        |x|
+|lhu                  |0000011|1         |000     |1       |0         |001        |00        |00     |1        |x|
+|lb                   |0000011|1         |000     |1       |0         |001        |00        |00     |1        |x|
+|lbu                  |0000011|1         |000     |1       |0         |001        |00        |00     |1        |x|
+|lui                  |0110111|1         |101     |x       |0         |011        |00        |xx     |0        |x|
+|auipc                |0010111|1         |101     |x       |0         |100        |00        |xx     |0        |0|
+|sw                   |0100011|0         |001     |1       |1         |xxx        |00        |00     |0        |x|
+|sh                   |0100011|0         |001     |1       |1         |xxx        |00        |00     |1        |x|
+|sb                   |0100011|0         |001     |1       |1         |xxx        |00        |00     |1        |x|
+|R-type               |0110011|1         |xxx     |0       |0         |000        |00        |10     |0        |x|
+|I-type arithmetic ALU|0010011|1         |000     |1       |0         |000        |00        |10     |0        |x|
+|beq                  |1100011|0         |010     |0       |0         |xxx        |10        |01     |x        |0|
+|bne                  |1100011|0         |010     |0       |0         |xxx        |10        |01     |x        |0|
+|bge                  |1100011|0         |010     |0       |0         |xxx        |10        |01     |x        |0|
+|bgeu                 |1100011|0         |010     |0       |0         |xxx        |10        |01     |x        |0|
+|blt                  |1100011|0         |010     |0       |0         |xxx        |10        |01     |x        |0|
+|bltu                 |1100011|0         |010     |0       |0         |xxx        |10        |01     |x        |0|
+|jal                  |1101111|1         |011     |x       |0         |010        |01        |xx     |0        |0|
+|jalr                 |1100111|1         |000     |x       |0         |010        |01        |xx     |0        |1|
 
+# Branch Decoder
+I decided to implement an extra decoder in order to deal with branching logic. This decoder will take in the flags generated by the ALU, funct3, and BranchOp. BranchOp is generated by the main decoder, and used to determine branching, much like the signal ALUOp. As branching is dependant on flags, I will be describing the truth table in terms of an internal signal, which will be called Branch. Note that although this is called the Branch decoder, it will also be be dealing with jumps as well, which in essence, are an unconditional branch.
 
+The truth table for determining Branch, as well as the flag operation that is performed is described as follows:
+
+| Instructions             | BranchOp | funct3 | Branch | Flag Operation |
+|--------------------------|----------|--------|--------|----------------|
+|Non-branching Instructions|00        |xxx     |000     |N/A             |
+|Jumps                     |01        |xxx     |111     |N/A             |
+|beq                       |10        |000     |001     |Z               |
+|bne                       |10        |001     |010     |Z'              |
+|bge                       |10        |101     |011     |(N^V)'          |
+|bgeu                      |10        |111     |100     |C               |
+|blt                       |10        |100     |101     |N^V             |
+|bltu                      |10        |110     |110     |C'              |
+
+# Width Decoder
+This decoder is used to determine the width of data stored or fetched from memory. It takes a control signal from the main decoder, WidthOp, as well as funct3 in order to determine what width of data is to be either stored or loaded to/from data memory. The resulting control signal WidthSrc is sent both directly to the data memory to handle store instructions, as well as to an extension unit (called "reduce") right after data memory.
+
+The truth table for determining the value of WidthSrc, is described as follows:
+
+| Instructions              | WidthOp | funct3 | WidthSrc |
+|---------------------------|---------|--------|----------|
+|non-store/load instructions|0        |xxx     |000       |
+|lw                         |1        |010     |000       |
+|lh                         |1        |001     |010       |
+|lhu                        |1        |101     |110       |
+|lb                         |1        |000     |001       |
+|lbu                        |1        |100     |101       |
+
+The following table describes the behaviour of width setting modules
+
+| WidthSrc | width |
+|----------|-------|
+|000       |32-bits|
+|010       |16-bits signed|
+|110       |16-bits unsigned|
+|001       |8-bits signed|
+|101       |8-bits unsigned|
 # ALU
 The ALU implements add, subtract, and, or, xor, slt, sltu, sll, srl, and sra. All extensions are handeled by an extension unit.
 
@@ -134,17 +172,3 @@ The immediate extension unit needs to extend immediates depending on the type of
 |010|{{20{Instr[31]}}, Instr[7], Instr[30:25], Instr[11:8], 1'b0}| B | 13-bit signed immediate extension|
 |011|{{12{Instr[31]}}, Instr[19:12], Instr[20], Instr[30:21], 1'b0}| J | 21-bit signed immediate extension|
 |101|{Instr[31:12], 12'b0}| U | Zero-extend bottom 12-bits of upper immediate|
-
-
-# Width Logic
-The WidthSrc signal controls what width of data is either stored or loaded from data memory. The signal is sent both directly to the data memory to handle store instructions, as well as to an extension unit (called "reduce") right after data memory.
-
-The following table describes the behaviour of width setting modules
-
-| WidthSrc | width |
-|----------|-------|
-|000       |32-bits|
-|010       |16-bits signed|
-|110       |16-bits unsigned|
-|001       |8-bits signed|
-|101       |8-bits unsigned|
