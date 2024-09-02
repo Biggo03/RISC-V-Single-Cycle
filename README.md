@@ -62,6 +62,7 @@ This processors control unit currently contains the following control signals. N
 |PCSrc|Determines if branch/jump is actually to take place| 
 |ALUOp|Assists in determining ALU operation (further dependant on funct3 and funct7)|
 |ALUControl|Determines the ALU operation|
+|WidthOp|Assists in determining WidthSrc|
 |WidthSrc|Determines the width of meaningful data in result signal|
 |PCBaseSrc|Determines what will be added to an immediate when calculating PCTarget|
 
