@@ -73,18 +73,11 @@ The main decoder takes in an opcode, and generates the majority of control signa
 |---------------------|-------|----------|--------|--------|----------|-----------|----------|-------|---------|-|
 |lui                  |0110111|1         |101     |x       |0         |011        |00        |xx     |0        |x|
 |auipc                |0010111|1         |101     |x       |0         |100        |00        |xx     |0        |0|
-|sw                   |0100011|0         |001     |1       |1         |xxx        |00        |00     |0        |x|
-|sh                   |0100011|0         |001     |1       |1         |xxx        |00        |00     |1        |x|
-|sb                   |0100011|0         |001     |1       |1         |xxx        |00        |00     |1        |x|
 |R-type               |0110011|1         |xxx     |0       |0         |000        |00        |10     |0        |x|
 |I-type arithmetic ALU|0010011|1         |000     |1       |0         |000        |00        |10     |0        |x|
 |I-type Load          |0000011|1         |000     |1       |0         |001        |00        |00     |1        |x|
-|beq                  |1100011|0         |010     |0       |0         |xxx        |10        |01     |x        |0|
-|bne                  |1100011|0         |010     |0       |0         |xxx        |10        |01     |x        |0|
-|bge                  |1100011|0         |010     |0       |0         |xxx        |10        |01     |x        |0|
-|bgeu                 |1100011|0         |010     |0       |0         |xxx        |10        |01     |x        |0|
-|blt                  |1100011|0         |010     |0       |0         |xxx        |10        |01     |x        |0|
-|bltu                 |1100011|0         |010     |0       |0         |xxx        |10        |01     |x        |0|
+|S-type               |0100011|0         |001     |1       |1         |xxx        |00        |00     |1        |x|
+|B-type               |1100011|0         |010     |0       |0         |xxx        |10        |01     |x        |0|
 |jal                  |1101111|1         |011     |x       |0         |010        |01        |xx     |0        |0|
 |jalr                 |1100111|1         |000     |x       |0         |010        |01        |xx     |0        |1|
 
@@ -117,6 +110,9 @@ The truth table for determining the value of WidthSrc, is described as follows:
 |lhu                        |1        |101     |110       |
 |lb                         |1        |000     |001       |
 |lbu                        |1        |100     |101       |
+|sw                         |1        |010     |000       |
+|sh                         |1        |001     |010       |
+|sb                         |1        |000     |001       |
 
 The following table describes the behaviour of width setting modules
 
