@@ -106,14 +106,11 @@ The truth table for determining the value of WidthSrc, is described as follows:
 | Instructions              | WidthOp | funct3 | WidthSrc |
 |---------------------------|---------|--------|----------|
 |non-store/load instructions|0        |xxx     |000       |
-|lw                         |1        |010     |000       |
-|lh                         |1        |001     |010       |
+|lw, sw                     |1        |010     |000       |
+|lh, sh                     |1        |001     |010       |
+|lb, sb                     |1        |000     |001       |
 |lhu                        |1        |101     |110       |
-|lb                         |1        |000     |001       |
 |lbu                        |1        |100     |101       |
-|sw                         |1        |010     |000       |
-|sh                         |1        |001     |010       |
-|sb                         |1        |000     |001       |
 
 The following table describes the behaviour of width setting modules
 
