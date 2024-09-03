@@ -22,7 +22,6 @@
 
 
 module maindecoder(input [6:0] op,
-                   input [2:0] funct3,
                    output [2:0] ImmSrc, ResultSrc,
                    output [1:0] ALUOp, BranchOp,
                    output WidthOp,
