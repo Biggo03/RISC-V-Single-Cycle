@@ -9,7 +9,7 @@
 // Project Name: riscvsingle
 // Target Devices: 
 // Tool Versions: 
-// Description: Top level module containing both the datapath, and the control unit.
+// Description: Top level processor module containing both the datapath, and the control unit.
 // 
 // Dependencies: 
 // 
@@ -26,7 +26,7 @@ module riscvsingle(input clk, reset,
                    output MemWrite,
                    output [2:0] WidthSrc,
                    output [31:0] ALUResult, WriteData,
-                   input ReadData);
+                   input [31:0] ReadData);
     
     //Signals used to communicate between control unit and datapath
     wire PCSrc, PCBaseSrc, ALUSrc, RegWrite;
