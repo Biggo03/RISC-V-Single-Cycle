@@ -26,7 +26,7 @@ module datapath(input clk, reset,
                 input ALUSrc,
                 input RegWrite,
                 input PCSrc, PCBaseSrc,
-                input [31:0] Instr,
+                input [31:0] instr,
                 input [31:0] ReadData,
                 output [31:0] WriteData,
                 output [31:0] PC,
@@ -52,8 +52,8 @@ module datapath(input clk, reset,
     
     
     //Register File Logic
-    rf RegisterFile(clk, reset, Instr[19:15], Instr[24:20], Instr[11:7], Result, SrcA, WriteData);
-    extend Extend(Instr[31:7], ImmSrc, ImmExt);
+    rf RegisterFile(clk, reset, instr[19:15], instr[24:20], instr[11:7], Result, SrcA, WriteData);
+    extend Extend(instr[31:7], ImmSrc, ImmExt);
     
     
     //ALU Logic

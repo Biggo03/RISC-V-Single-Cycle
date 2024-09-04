@@ -6,10 +6,10 @@
 // Create Date: 08/21/2024 04:33:04 PM
 // Design Name: 
 // Module Name: riscvsingle
-// Project Name: 
+// Project Name: riscvsingle
 // Target Devices: 
 // Tool Versions: 
-// Description: 
+// Description: Top level module containing both the datapath, and the control unit.
 // 
 // Dependencies: 
 // 
@@ -27,11 +27,22 @@ module riscvsingle(input clk, reset,
                    output [2:0] WidthSrc,
                    output [31:0] ALUResult, WriteData,
                    input ReadData);
-
-    wire PCSrc, PCBaseSrc, ALUSrc, RegWrite, Jump;
-    wire Zero, Overflow, Carry, Negative;
+    
+    //Signals used to communicate between control unit and datapath
+    wire PCSrc, PCBaseSrc, ALUSrc, RegWrite;
+    wire N, Z, C, V;
     wire [2:0] ResultSrc, ImmSrc;
-    wire ALUControl[3:0];
+    wire [3:0] ALUControl;
+    
+    //Control Unit
+    controlunit CU(instr[6:0], instr[14:12], instr[30], N, Z, C, V, 
+                   ALUControl, ImmSrc, WidthSrc, ResultSrc, ALUSrc, 
+                   RegWrite, MemWrite, PCSrc, PCBaseSrc);
+    
+    //Datapath
+    datapath DP(clk, reset, ALUControl, ImmSrc, WidthSrc, ResultSrc, ALUSrc,
+                RegWrite, PCSrc, PCBaseSrc, instr, ReadData, WriteData, PC, ALUResult,
+                N, Z, C, V);
 
 endmodule
 
