@@ -6,10 +6,11 @@
 // Create Date: 08/23/2024 08:52:13 PM
 // Design Name: 
 // Module Name: reduce
-// Project Name: 
+// Project Name: riscvsingle
 // Target Devices: 
 // Tool Versions: 
-// Description: 
+// Description: This is an extension unit used to reduce the effective width of data retrieved from memory.
+//
 // 
 // Dependencies: 
 // 
@@ -21,13 +22,13 @@
 
 
 module reduce (input [31:0] BaseResult,
-               input [2:0] Width,
+               input [2:0] WidthSrc,
                output [31:0] Result);
         
     reg [31:0] TempResult;
     
     always @(*) begin
-        case(Width)
+        case(WidthSrc)
         
             //32-bit
             3'b000: TempResult = BaseResult;

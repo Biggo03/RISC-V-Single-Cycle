@@ -6,12 +6,13 @@
 // Create Date: 08/29/2024 04:36:34 PM
 // Design Name: 
 // Module Name: ALUdecoder
-// Project Name: 
+// Project Name: riscvsingle
 // Target Devices: 
 // Tool Versions: 
-// Description: 
+// Description: Outputs a control signal that determines the operation the ALU is to perform.
+//              This is based on an intermediary control signal from the main decoder, ALUOp, and the instructions funct3 and funct7[5] fields
 // 
-// Dependencies: 
+// Dependencies:
 // 
 // Revision:
 // Revision 0.01 - File Created

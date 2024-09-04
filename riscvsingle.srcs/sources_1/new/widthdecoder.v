@@ -6,7 +6,7 @@
 // Create Date: 09/02/2024 06:15:16 PM
 // Design Name: 
 // Module Name: widthdecoder
-// Project Name: 
+// Project Name: riscvsingle
 // Target Devices: 
 // Tool Versions: 
 // Description: Uses WidthOp and funct3 in order to determine the control signal WidthSrc.
@@ -29,7 +29,7 @@ module widthdecoder(input [2:0] funct3,
     
     always @(*) begin
         
-        if (~WidthOp) TempWidthSrc = 3'bxxx;
+        if (~WidthOp) TempWidthSrc = 3'bxxx; //Non-branching Instructions
         else begin
             
             //Width dependant on funct3

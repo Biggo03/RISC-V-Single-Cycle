@@ -6,7 +6,7 @@
 // Create Date: 08/30/2024 04:12:05 PM
 // Design Name: 
 // Module Name: maindecoder
-// Project Name: 
+// Project Name: riscvsingle
 // Target Devices: 
 // Tool Versions: 
 // Description: Deocodes the given opcode and outputs a majority of control signals

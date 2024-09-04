@@ -6,7 +6,7 @@
 // Create Date: 08/27/2024 05:31:28 PM
 // Design Name: 
 // Module Name: ALU
-// Project Name: 
+// Project Name: riscvsingle
 // Target Devices: 
 // Tool Versions: 
 // Description: Take control signal ALUControl, and does the corrosponding operation.

@@ -6,10 +6,10 @@
 // Create Date: 08/23/2024 09:21:16 PM
 // Design Name: 
 // Module Name: mux2
-// Project Name: 
+// Project Name: riscvsingle
 // Target Devices: 
 // Tool Versions: 
-// Description: 
+// Description: A two-input mux
 // 
 // Dependencies: 
 // 

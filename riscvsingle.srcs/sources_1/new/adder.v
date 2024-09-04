@@ -6,10 +6,10 @@
 // Create Date: 08/23/2024 08:32:57 PM
 // Design Name: 
 // Module Name: adder
-// Project Name: 
+// Project Name: riscvsingle
 // Target Devices: 
 // Tool Versions: 
-// Description: 
+// Description: Adds two 32-bit inputs, a and b.
 // 
 // Dependencies: 
 // 

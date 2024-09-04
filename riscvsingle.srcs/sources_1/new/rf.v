@@ -6,16 +6,27 @@
 // Create Date: 08/23/2024 09:43:28 PM
 // Design Name: 
 // Module Name: rf
-// Project Name: 
+// Project Name: riscvsingle
 // Target Devices: 
 // Tool Versions: 
-// Description: 
+// Description: This is a register file, holding all 32 registers used in the RISC-V architecture.
+//              This module can read from two registers at a given time, and write to one register.
 // 
 // Dependencies: 
 // 
 // Revision:
 // Revision 0.01 - File Created
-// Additional Comments:
+// Additional Comments: Note that the RISC-V registers are defined as follows:
+//                      Zero Register: x0
+//                      Return address: x1
+//                      Stack pointer: x2
+//                      Global pointer: x3
+//                      Thread pointer: x4
+//                      Temporary registers: x5-x7, x28-x31
+//                      Saved register/Frame pointer: x8
+//                      Saved registers x9, x18-x27
+//                      Function arguments and return values: x10- x17
+//                     
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -32,58 +43,20 @@ module rf(input clk, reset,
     //will enable writing to register that matches index of the active bit
     wire [31:0] en;
     
+    //Variable used to generate registers x1-x31
+    genvar i;
+    
     //Initalize the registers
     
     //Zero register
     flop zero(clk, 1'b0, reset, 32'b0, RegisterArray[0]);
     
-    //Return address register (x1)
-    flop ra(clk, en[1], reset, WD3, RegisterArray[1]);
-    
-    //Stack pointer (x2)
-    flop sp(clk, en[2], reset, WD3, RegisterArray[2]);  
-    
-    //Global pointer (x3)
-    flop gp(clk, en[3], reset, WD3, RegisterArray[3]);
-    
-    //Thread pointer (x4)
-    flop tp(clk, en[4], reset, WD3, RegisterArray[4]);
-    
-    //Temporary registers (x5-x7, x28-x31)
-    flop t0(clk, en[5], reset, WD3, RegisterArray[5]);
-    flop t1(clk, en[6], reset, WD3, RegisterArray[6]);
-    flop t2(clk, en[7], reset, WD3, RegisterArray[7]);
-    flop t3(clk, en[28], reset, WD3, RegisterArray[28]);
-    flop t4(clk, en[29], reset, WD3, RegisterArray[29]);
-    flop t5(clk, en[30], reset, WD3, RegisterArray[30]);
-    flop t6(clk, en[31], reset, WD3, RegisterArray[31]);
-    
-    //Saved register/Frame pointer (x8)
-    flop s0(clk, en[8], reset, WD3, RegisterArray[8]);
-    
-    //Saved registers (x9, x18-x27)
-    flop s1(clk, en[9], reset, WD3, RegisterArray[9]);
-    flop s2(clk, en[18], reset, WD3, RegisterArray[18]);
-    flop s3(clk, en[19], reset, WD3, RegisterArray[19]);
-    flop s4(clk, en[20], reset, WD3, RegisterArray[20]);
-    flop s5(clk, en[21], reset, WD3, RegisterArray[21]);
-    flop s6(clk, en[22], reset, WD3, RegisterArray[22]);
-    flop s7(clk, en[23], reset, WD3, RegisterArray[23]);
-    flop s8(clk, en[24], reset, WD3, RegisterArray[24]);
-    flop s9(clk, en[25], reset, WD3, RegisterArray[25]);
-    flop s10(clk, en[26], reset, WD3, RegisterArray[26]);
-    flop s11(clk, en[27], reset, WD3, RegisterArray[27]);
-    
-    //Function arguments and return values (x10- x17)
-    flop a0(clk, en[10], reset, WD3, RegisterArray[10]);
-    flop a1(clk, en[11], reset, WD3, RegisterArray[11]);
-    flop a2(clk, en[12], reset, WD3, RegisterArray[12]);
-    flop a3(clk, en[13], reset, WD3, RegisterArray[13]);
-    flop a4(clk, en[14], reset, WD3, RegisterArray[14]);
-    flop a5(clk, en[15], reset, WD3, RegisterArray[15]);
-    flop a6(clk, en[16], reset, WD3, RegisterArray[16]);
-    flop a7(clk, en[17], reset, WD3, RegisterArray[17]);
-    
+    //Use generate block and for loop to create remainder of registers
+    generate
+        for (i = 1; i < 32; i = i+1) begin
+            flop r(clk, en[i], reset, WD3, RegisterArray[i]);
+        end
+    endgenerate
     
     //Reading logic   
     assign RD1 = RegisterArray[A1];

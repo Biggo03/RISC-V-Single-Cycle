@@ -6,10 +6,10 @@
 // Create Date: 08/23/2024 09:23:44 PM
 // Design Name: 
 // Module Name: mux5
-// Project Name: 
+// Project Name: riscvsingle
 // Target Devices: 
 // Tool Versions: 
-// Description: 
+// Description: A 5-input mux
 // 
 // Dependencies: 
 // 

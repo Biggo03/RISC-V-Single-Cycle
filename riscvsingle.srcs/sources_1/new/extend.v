@@ -6,10 +6,11 @@
 // Create Date: 08/23/2024 08:38:32 PM
 // Design Name: 
 // Module Name: extend
-// Project Name: 
+// Project Name: riscvsingle
 // Target Devices: 
 // Tool Versions: 
-// Description: 
+// Description: This is an extension unit used to extend immediates.
+//              The extension performed is based on the type of instruction, and controlled by ImmSrc.
 // 
 // Dependencies: 
 // 

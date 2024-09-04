@@ -9,7 +9,8 @@
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
-// Description: 
+// Description: Generates a one-hot encoded signal based on a given address.
+//              The active bit is of index A.
 // 
 // Dependencies: 
 // 
@@ -21,19 +22,8 @@
 
 
 module writedecoder(input [4:0] A,
-                     output reg [31:0] en);
-                     
-    always @(A) begin
-        
-        //Initilize to all 0's
-        en = 32'b0;
-        
-        //32 Registers, which have addresses 0-31, an address of 32 is invalid
-        //Register 0 cannot be written to, so it is also invalid
-        if (A == 32 | A == 0) en = 31'b0;
-        
-        else en[A] = 1'b1;
-        
-    end
+                    output [31:0] en);
+                            
+    assign en = 1'b1 << A;
 
 endmodule

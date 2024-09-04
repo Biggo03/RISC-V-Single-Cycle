@@ -6,10 +6,10 @@
 // Create Date: 08/23/2024 09:48:45 PM
 // Design Name: 
 // Module Name: flop
-// Project Name: 
+// Project Name: riscvsingle
 // Target Devices: 
 // Tool Versions: 
-// Description: 
+// Description: This is a resettable enabled register with a base width of 32-bits
 // 
 // Dependencies: 
 // 
