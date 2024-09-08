@@ -9,7 +9,7 @@
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
-// Description: 
+// Description: Testbench for the mux2 module
 // 
 // Dependencies: 
 // 
