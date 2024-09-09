@@ -52,5 +52,7 @@ module reduce (input [31:0] BaseResult,
     
     end
     
+    assign Result = TempResult;
+    
     
 endmodule

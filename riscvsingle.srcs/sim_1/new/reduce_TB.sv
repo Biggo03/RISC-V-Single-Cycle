@@ -3,13 +3,13 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 09/08/2024 02:48:27 PM
+// Create Date: 09/09/2024 03:08:14 PM
 // Design Name: 
-// Module Name: extend_TB
+// Module Name: reduce_TB
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
-// Description: Testbench for the extend module
+// Description: 
 // 
 // Dependencies: 
 // 
@@ -20,35 +20,35 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module extend_TB();
+module reduce_TB();
 
-    logic [31:7] instr;
-    logic [2:0] ImmSrc;
-    logic [31:0] ImmExt, ImmExtExpected;
+    logic [31:0] BaseResult;
+    logic [2:0] WidthSrc;
+    logic [31:0] Result, ResultExpected;
     
     int file;
     int read;
     int test_num;
     
-    extend DUT(instr, ImmSrc, ImmExt);
+    reduce DUT(BaseResult, WidthSrc, Result);
     
     initial begin
         
         read = 0;
         
-        file = $fopen("ext_unit_test_vectors.txt", "r");
+        file = $fopen("reduce_test_vectors.txt", "r");
         
         
         //Iterate through file
         while (!$feof(file)) begin
-            read = $fscanf(file, "%b %b %b\n", instr, ImmSrc, ImmExtExpected);
+            read = $fscanf(file, "%b %b %b\n", BaseResult, WidthSrc, ResultExpected);
             
             //Ensure file reads correct number of elements
             if (read == 3) begin
                 #1;
-                assert (ImmExt == ImmExtExpected) else begin
-                    $fatal("Error: ImmSrc = %b, instr = %b\nExpected output: %b\nActual output:   %b", 
-                       ImmSrc, instr, ImmExtExpected,ImmExt);
+                assert (Result == ResultExpected) else begin
+                    $fatal("Error: WidthSrc = %b, BaseResult = %b\nExpected output: %b\nActual output:   %b", 
+                       WidthSrc, BaseResult, ResultExpected, Result);
                 end
                 
             end else begin
