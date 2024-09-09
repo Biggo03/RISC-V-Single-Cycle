@@ -163,4 +163,4 @@ The immediate extension unit needs to extend immediates depending on the type of
 |001|{{20{Instr[31]}}, Instr[31:25], Instr[11:7]}| S | 12-bit signed immediate extension|
 |010|{{20{Instr[31]}}, Instr[7], Instr[30:25], Instr[11:8], 1'b0}| B | 13-bit signed immediate extension|
 |011|{{12{Instr[31]}}, Instr[19:12], Instr[20], Instr[30:21], 1'b0}| J | 21-bit signed immediate extension|
-|101|{Instr[31:12], 12'b0}| U | Zero-extend bottom 12-bits of upper immediate|
+|100|{Instr[31:12], 12'b0}| U | Zero-extend bottom 12-bits of upper immediate|
