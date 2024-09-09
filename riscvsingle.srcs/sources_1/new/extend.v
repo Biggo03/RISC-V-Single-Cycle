@@ -43,7 +43,7 @@ module extend(input [31:7] Instr,
             3'b011: TempImmExt = {{12{Instr[31]}}, Instr[19:12], Instr[20], Instr[30:21], 1'b0};
             
             //U-Type
-            3'b101: TempImmExt = {Instr[31:12], 12'b0};
+            3'b100: TempImmExt = {Instr[31:12], 12'b0};
             
             //Undefined
             default: TempImmExt = 32'bx; 
