@@ -1,6 +1,8 @@
 from bitstring import BitArray
 import random
 
+#Functions used in multiple vector generation functions-----------------------------------------------------
+
 def get_verilog_index(start_index=31, end_index=0):
     new_start = 31-start_index
 
@@ -20,6 +22,11 @@ def write_vec_to_file(full_vector, file):
         if (i != len(full_vector) - 1):
             file.write(" ")
     file.write("\n")
+
+def scale_to_signed_31(num):
+    return (num/(2**31)) * 31
+
+#Vector generation functions--------------------------------------------------------------------------------
 
 def extension_vector_gen(vector_per_op, file):
     immSrc = []
@@ -122,9 +129,6 @@ def extension_vector_gen(vector_per_op, file):
 
                 full_vector.append(expected_result.bin)
 
-            else:
-                full_vector.append(32* "x")
-
             #Write all to file
             write_vec_to_file(full_vector, file)
 
@@ -188,6 +192,102 @@ def reduce_vector_gen(vector_per_op, file):
             full_vector.append(expected_result.bin)
 
             write_vec_to_file(full_vector, file)
+
+def ALU_vector_gen(vector_per_op, file, test_case="Random"):
+    
+    #Initialize valid control signals
+    ALU_control = []
+    for i in range(10):
+        ALU_control.append(BitArray(uint=i, length=4))
+    
+
+
+    for opCode in ALU_control:
+        for i in range(vector_per_op):
+            
+            #Create empty vector
+            full_vector = []
+            full_vector.append(opCode.bin)
+
+            #Determine range of test inputs
+            if (test_case == "Random" and opCode.bin != "0000" and opCode.bin != "0001"):
+                lower_range = -2**31
+                upper_range = 2**31-1
+            
+            elif (test_case == "High"):
+                lower_range = 2**31
+                upper_range = 2**32-1
+            
+            elif (test_case == "Negative"):
+                lower_range = -2**31
+                upper_range = -2**10
+
+            if (opCode == "0000" or opCode == "0001" or opCode == "0111"):
+                initial_num_b = random.randint(0, 31)
+                b = BitArray(uint = initial_num_b length = 32)
+            else:
+                initial_num_b = random.randint(lower_range, upper_range)
+                b = BitArray(int = initial_num_b length = 32)
+                
+            
+            initial_num_a = random.randint(lower_range, upper_range)
+
+            a = BitArray(int = initial_num_a, length = 32)
+
+            full_vector.append(a.bin)
+            full_vector.append(b.bin)
+
+
+            #shift right logical
+            if (opCode.bin == "0000"):
+                expected_result  = a >> b.uint
+            
+            #shift right arithmetic
+            elif (opCode.bin == "0001"):
+                expected_result = a >>> b.uint
+
+            #AND
+            elif (opCode.bin == "0010"):
+                expected_result = a & b
+
+            #OR
+            elif (opCode.bin == "0011"):
+                expected_result = a | b
+
+            #XOR
+            elif (opCode.bin == "0100"):
+                expected_result = a ^ b
+            
+            #SLT
+            elif (opCode.bin == "0101"):
+                if (a.int < b.int):
+                    expected_result = BitArray(int=-1, length=32)
+                else:
+                    expected_result = BitArray(int=0, length=32)
+            
+            #SLTU
+            elif (opCode.bin == "0110"):
+                if (a.uint < b.uint):
+                    expected_result = BitArray(int=-1, length=32)
+                else:
+                    expected_result = BitArray(int=0, length=32)     
+
+            #Shit left logical
+            elif (opCode.bin == "0111"):
+                expected_result = a << b.uint 
+            
+            #Addition
+            elif (opCode.bin == "1000"):
+                expected_result = BitArray(int=(a.int + b.int), length=32)
+
+            #Subtraction
+            else:
+                expected_result = BitArray(int=(a.int - b.int), length=32)
+            
+            full_vector.append(expected_result)
+
+            write_vec_to_file(full_vector, file)
+
 
 def main():
 

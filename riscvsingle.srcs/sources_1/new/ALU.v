@@ -26,6 +26,7 @@ module ALU(input [3:0] ALUControl,
            output [31:0] ALUResult,
            output N, Z, C, V);
 
+    //Intermediate signals for use in always statement
     reg [31:0] TempResult;
     reg Cout;
     reg TempC, TempV; 
