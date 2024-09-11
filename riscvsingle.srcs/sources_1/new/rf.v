@@ -38,7 +38,7 @@ module rf(input clk, reset,
           output [31:0] RD1, RD2);
     
     //Signals to hold the values of the created registers at all times
-    reg [31:0] RegisterArray [31:0];
+    wire [31:0] RegisterArray [31:0];
     
     //will enable writing to register that matches index of the active bit
     wire [31:0] en;
@@ -63,6 +63,6 @@ module rf(input clk, reset,
     assign RD2 = RegisterArray[A2];
     
     //Writing Logic (only need to set enable bit)
-    writedecoder enabledecoder(A3, en);     
+    writedecoder enabledecoder(A3, WE3, en);     
           
 endmodule

@@ -22,8 +22,9 @@
 
 
 module writedecoder(input [4:0] A,
+                    input WE,
                     output [31:0] en);
-                            
-    assign en = 1'b1 << A;
+    
+    assign en = WE ? 1'b1 << A : 0;
 
 endmodule

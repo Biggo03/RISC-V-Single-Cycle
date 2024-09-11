@@ -55,10 +55,8 @@ module ALU_TB();
                 $fatal("Incorrect number of arguments read");
 
             end
-                
             
         end
-        
         
         $display("Simulation Succesful!");
         
