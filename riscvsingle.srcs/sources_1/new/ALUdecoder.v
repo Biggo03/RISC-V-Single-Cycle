@@ -50,9 +50,9 @@ module ALUdecoder(input [2:0] funct3,
                 //addition or subtraction
                 3'b000: begin
                 
-                    //only sub if op[5] and funct7[5] = 1
-                    if (op5 & funct7b5) TempALUControl = 4'b1001;
-                    else TempALUControl = 4'b1000;
+                    //Sub if op[5] and funct7[5] = 1
+                    if (op5 & funct7b5) TempALUControl = 4'b1001; //Sub
+                    else TempALUControl = 4'b1000; //Add
                 
                 end
             
@@ -60,9 +60,9 @@ module ALUdecoder(input [2:0] funct3,
                 3'b101: begin
                 
                     // Logical, {op[5], funct7[5]} = 00, 10
-                    if (~funct7b5) TempALUControl = 4'b0000;
+                    if (~funct7b5) TempALUControl = 4'b0000; //SRL
                     //Arithmetic {op[5], funct7[5]} = 11, 01
-                    else TempALUControl = 4'b0001;
+                    else TempALUControl = 4'b0001; //SRA
             
                 end
             
