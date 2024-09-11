@@ -2,7 +2,15 @@ from bitstring import BitArray
 import random
 
 #Functions used in multiple vector generation functions-----------------------------------------------------
-
+"""
+Description: Convert Verilog indexes into corrosponding python indexes.
+Parameters:
+    start_index: The first index in a Verilog signal access
+    end_index: The second index in a Verilog signal access
+Returns:
+    new_start: Corrosponding Python index for first Verilog index
+    new_end: Corrosponding Python indexe for second Verilog index
+"""
 def get_verilog_index(start_index=31, end_index=0):
     new_start = 31-start_index
 
@@ -11,10 +19,28 @@ def get_verilog_index(start_index=31, end_index=0):
 
     return new_start, new_end
 
+"""
+Description: Generate extension for an immediate
+Parameters:
+    num_ext_bits: Number of bits to extend
+    MSB: MSB of the given immediate
+    immediate: The immediate itself
+Returns:
+    An sign extended immediate
+"""
 def generate_extension(num_ext_bits, MSB, immediate):
     ext =  BitArray(int=-1*MSB, length=num_ext_bits)
     return ext + immediate
 
+
+"""
+Description: Writes a list of vectors to a given file
+Parameters:
+    full_vector: The list that's to be written to a line of the file
+    file: The file that's being written to
+Returns: 
+    N/A
+"""
 def write_vec_to_file(full_vector, file):
     for i in range(len(full_vector)):
         file.write(full_vector[i])
@@ -23,11 +49,58 @@ def write_vec_to_file(full_vector, file):
             file.write(" ")
     file.write("\n")
 
-def scale_to_signed_31(num):
-    return (num/(2**31)) * 31
+"""
+Description: Performs an arithemtic right shift
+Parameters: 
+    num: BitArray number to be shifted
+    shift_amt: An unsigned shift amount
+Returns:
+    shifted_num: The shifted BitArray
+"""
+def arithmetic_right_shift(num, shift_amt):
+    msb = num[0]
+
+    shifted_num = num >> shift_amt
+
+    for i in range(shift_amt):
+        shifted_num[i] = msb
+    
+    return shifted_num
+
+"""
+Description: Generates lower and upper bounds for a given testcase
+Parameters:
+    test_case: The type of range to be calculated
+returns:
+    lower_range: The lower bound
+    upper_range: The upper bound
+"""
+def generate_int_range(test_case):
+    if (test_case == "Random"):
+        lower_range = -2**31
+        upper_range = 2**31-1
+    elif (test_case == "High"):
+        lower_range = 2**31
+        upper_range = 2**32-1
+    elif (test_case == "Negative"):
+        lower_range = -2**31
+        upper_range = -2**10
+    elif (test_case == "Zeros"):
+        lower_range = 0
+        upper_range = 1
+    
+    return lower_range, upper_range
 
 #Vector generation functions--------------------------------------------------------------------------------
 
+"""
+Description: Generates test vectors for the extension.v module
+Parameters:
+    vecter_per_op: Number of vectors to produce per opcode
+    file: The file to be writing test vectors to
+returns: 
+    N/A
+"""
 def extension_vector_gen(vector_per_op, file):
     immSrc = []
 
@@ -132,6 +205,14 @@ def extension_vector_gen(vector_per_op, file):
             #Write all to file
             write_vec_to_file(full_vector, file)
 
+"""
+Description: Generates test vectors for the reduce.v module
+Parameters:
+    vecter_per_op: Number of vectors to produce per opcode
+    file: The file to be writing test vectors to
+returns: 
+    N/A
+"""
 def reduce_vector_gen(vector_per_op, file):
     
     #generate control valid control signal
@@ -193,14 +274,29 @@ def reduce_vector_gen(vector_per_op, file):
 
             write_vec_to_file(full_vector, file)
 
+"""
+Description: Generates test vectors for the ALU.v module
+Parameters:
+    vecter_per_op: Number of vectors to produce per opcode
+    file: The file to be writing test vectors to
+    test_case: what range of randomized inputs are to be generated
+returns: 
+    N/A
+"""
 def ALU_vector_gen(vector_per_op, file, test_case="Random"):
     
     #Initialize valid control signals
     ALU_control = []
-    for i in range(10):
+
+    #go 9 down to 0, as add and sub are highest opCode
+    #Need to set overflow and carry flags (propogate through other test cases)
+    for i in range(9, -1, -1):
         ALU_control.append(BitArray(uint=i, length=4))
     
+    shift_codes = ["0000", "0001", "0111"]
 
+    #Determine range of test inputs
+    lower_range, upper_range = generate_int_range(test_case)
 
     for opCode in ALU_control:
         for i in range(vector_per_op):
@@ -209,30 +305,23 @@ def ALU_vector_gen(vector_per_op, file, test_case="Random"):
             full_vector = []
             full_vector.append(opCode.bin)
 
-            #Determine range of test inputs
-            if (test_case == "Random" and opCode.bin != "0000" and opCode.bin != "0001"):
-                lower_range = -2**31
-                upper_range = 2**31-1
             
-            elif (test_case == "High"):
-                lower_range = 2**31
-                upper_range = 2**32-1
-            
-            elif (test_case == "Negative"):
-                lower_range = -2**31
-                upper_range = -2**10
-
-            if (opCode == "0000" or opCode == "0001" or opCode == "0111"):
+            #shift amount always less than or equal to 31
+            if (opCode.bin in shift_codes):
                 initial_num_b = random.randint(0, 31)
-                b = BitArray(uint = initial_num_b length = 32)
+                b = BitArray(uint = initial_num_b, length = 32)
             else:
                 initial_num_b = random.randint(lower_range, upper_range)
-                b = BitArray(int = initial_num_b length = 32)
                 
-            
             initial_num_a = random.randint(lower_range, upper_range)
 
-            a = BitArray(int = initial_num_a, length = 32)
+            if (test_case == "High"):
+                a = BitArray(uint = initial_num_a, length = 32)
+                b = BitArray(uint = initial_num_b, length = 32)
+            else:
+                a = BitArray(int = initial_num_a, length = 32)
+                b = BitArray(int = initial_num_b, length = 32)
+
 
             full_vector.append(a.bin)
             full_vector.append(b.bin)
@@ -244,7 +333,7 @@ def ALU_vector_gen(vector_per_op, file, test_case="Random"):
             
             #shift right arithmetic
             elif (opCode.bin == "0001"):
-                expected_result = a >>> b.uint
+                expected_result = arithmetic_right_shift(a, b.uint)
 
             #AND
             elif (opCode.bin == "0010"):
@@ -278,21 +367,82 @@ def ALU_vector_gen(vector_per_op, file, test_case="Random"):
             
             #Addition
             elif (opCode.bin == "1000"):
-                expected_result = BitArray(int=(a.int + b.int), length=32)
+                sum_ab = a.int + b.int
+                usum_ab = a.uint + b.uint
+
+                expected_result = BitArray(int=sum_ab, length=33)
+
+                #Unique flag calculation
+                if (sum_ab > 2**31 - 1 or sum_ab < -2**31):
+                    overflow = "1"
+                else:
+                    overflow = "0"
+                
+                if (usum_ab > 2**32 - 1):
+                    carry = "1"
+                else:
+                    carry = "0"
+                
+                expected_result = expected_result[1:]
 
             #Subtraction
             else:
-                expected_result = BitArray(int=(a.int - b.int), length=32)
-            
-            full_vector.append(expected_result)
+                dif_ab = a.int - b.int
 
+                expected_result = BitArray(int=dif_ab, length=33)
+
+                #Unique flag calculation
+                if (dif_ab > 2**31 - 1 or dif_ab < -2**31):
+                    overflow = "1"
+                else:
+                    overflow = "0"
+                
+                if (a.uint < b.uint):
+                    carry = "1"
+                else:
+                    carry = "0"
+                
+                expected_result = expected_result[1:]
+
+            #N and Z flag calculation
+            if (expected_result.int == 0):
+                zero = "1"
+            else:
+                zero = "0"
+            
+            if (expected_result[0] == True):
+                negative = "1"
+            else:
+                negative = "0"
+            
+            #Append expected outputs to vector
+            full_vector.append(expected_result.bin)
+            full_vector.append(negative)
+            full_vector.append(zero)
+            full_vector.append(carry)
+            full_vector.append(overflow)
+
+            #Write vector to file
             write_vec_to_file(full_vector, file)
 
 
 def main():
+    
+    filename = "reduce_test_vectors.txt"
+    vector_per_op = 100
 
-    with open("reduce_test_vectors.txt", "w") as file:
-        reduce_vector_gen(30, file)
+    with open(filename, "w") as file:
+        if (filename == "ALU_test_vectors.txt"):
+            ALU_vector_gen(vector_per_op, file, "Random")
+        
+        if (filename == "ext_unit_test_vectors.txt"):
+            extension_vector_gen(vector_per_op, file)
+        
+        if (filename == "reduce_test_vectors.txt"):
+            reduce_vector_gen(vector_per_op, file)
+    
+    file.close()
+
 
 if __name__ == "__main__":
     main()

@@ -32,8 +32,7 @@ module ALU(input [3:0] ALUControl,
     reg TempC, TempV; 
     
     //VControl is used to determine if the overflow flag would be set
-    wire VControl;
-    assign VControl = ~(ALUControl[0] ^ A[31] ^ B[31]) & (A[31] ^ TempResult[31]);
+    reg VControl;
     
     
     always @(*) begin
@@ -41,20 +40,22 @@ module ALU(input [3:0] ALUControl,
         //Operation Logic
         case(ALUControl)
             4'b1000: {Cout, TempResult} = A + B; //Addition
-            4'b1001: {Cout, TempResult} = A - B; //Subtraction
+            4'b1001: {Cout, TempResult} = {1'b0, A} - {1'b0, B}; //Subtraction
             4'b0010: TempResult = A & B; //AND
             4'b0011: TempResult = A | B; //OR
             4'b0100: TempResult = A ^ B; //XOR
             4'b0111: TempResult = A << B; //Shift Left Logical
             4'b0000: TempResult = A >> B; //Shift Right Logical
-            4'b0001: TempResult = A >>>B; //Shift Right Arithmetic
-            
+            4'b0001:TempResult = $signed(A) >>> B; //Shift Right Arithmetic
+                
             //SLT
             4'b0101: begin
                     TempResult = A - B;
-                
+                    VControl = ~(ALUControl[0] ^ A[31] ^ B[31]) & (A[31] ^ TempResult[31]);
+                    
+                    
                     //LT comparison for sgined numbers determined by V and N flags (V ^ N)
-                    if (VControl ^ TempResult[31]) TempResult = 32'b1;
+                    if (VControl ^ TempResult[31]) TempResult = {32{1'b1}};
                     else TempResult = 32'b0;
                 
             end
@@ -64,8 +65,8 @@ module ALU(input [3:0] ALUControl,
                 
                     {Cout, TempResult} = A - B;
                 
-                    //LT comparison for unsigned numbers determined by C'
-                    if (~Cout) TempResult = 32'b1;
+                    //LT comparison for unsigned numbers determined by C
+                    if (Cout) TempResult = {32{1'b1}};
                     else TempResult = 32'b0;
                 
             end
@@ -76,6 +77,9 @@ module ALU(input [3:0] ALUControl,
         
         //Overflow and Carry Flag logic
         if (ALUControl[3] == 1'b1) begin
+            
+            VControl = ~(ALUControl[0] ^ A[31] ^ B[31]) & (A[31] ^ TempResult[31]);
+            
             if (Cout == 1'b1) TempC = 1'b1;
             else TempC = 1'b0;
             
@@ -101,6 +105,6 @@ module ALU(input [3:0] ALUControl,
     assign V = TempV;
     
     //Final Result Assignment
-    assign Result = TempResult;
+    assign ALUResult = TempResult;
 
 endmodule
