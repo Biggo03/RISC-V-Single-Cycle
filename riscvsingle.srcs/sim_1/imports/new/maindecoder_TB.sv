@@ -29,6 +29,7 @@ module maindecoder_TB();
     logic WidthOp, ALUSrc, PCBaseSrc, RegWrite, MemWrite;
     logic WidthOpExp, ALUSrcExp, PCBaseSrcExp, RegWriteExp, MemWriteExp;
     
+    //Instantiate DUT
     maindecoder DUT(op, ImmSrc, ResultSrc, ALUOp, BranchOp, WidthOp,
                     ALUSrc, PCBaseSrc, RegWrite, MemWrite);
     

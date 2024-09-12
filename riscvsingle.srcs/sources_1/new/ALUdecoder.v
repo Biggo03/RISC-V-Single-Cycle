@@ -77,5 +77,7 @@ module ALUdecoder(input [2:0] funct3,
         
         endcase
     end
+    
+    assign ALUControl = TempALUControl;
 
 endmodule

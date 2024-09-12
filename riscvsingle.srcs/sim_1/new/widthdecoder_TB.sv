@@ -32,8 +32,7 @@ module widthdecoder_TB();
     //Array for holding associated expected output
     logic [2:0] funct3Output [5:0];
     
-    
-    
+    //Instantiate DUT
     widthdecoder DUT(funct3, WidthOp, WidthSrc);
     
     initial begin
@@ -44,7 +43,7 @@ module widthdecoder_TB();
         
         //Ensure output is as expected for all values of funct3
         for (int i = 0; i < 8; i++) begin
-            funct3 <= i; #10;
+            funct3 = i; #10;
             assert (WidthSrc === WidthSrcExp) else $fatal("Error: WidthOp = 0 produces unexpected output");
         end 
         
@@ -52,12 +51,8 @@ module widthdecoder_TB();
         WidthOp = 1;
         
         //Populate arrays for checking valid functions of funct3
-        funct3Val[0] = 3'b010; funct3Output[0] = 3'b000;
-        funct3Val[1] = 3'b001; funct3Output[1] = 3'b010;
-        funct3Val[2] = 3'b000; funct3Output[2] = 3'b001;
-        funct3Val[3] = 3'b101; funct3Output[3] = 3'b110;
-        funct3Val[4] = 3'b100; funct3Output[4] = 3'b101;
-        funct3Val[5] = 3'b111; funct3Output[5] = 3'bxxx;
+        funct3Val = '{3'b010, 3'b001, 3'b000, 3'b101, 3'b100, 3'b111};
+        funct3Output = '{3'b000, 3'b010, 3'b001, 3'b110, 3'b101, 3'bxxx};
         
         //loop through values of funct3
         for (int i = 0; i < 6; i++) begin
