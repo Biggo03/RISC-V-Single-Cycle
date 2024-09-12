@@ -29,7 +29,7 @@ module widthdecoder(input [2:0] funct3,
     
     always @(*) begin
         
-        if (~WidthOp) TempWidthSrc = 3'bxxx; //Non-branching Instructions
+        if (~WidthOp) TempWidthSrc = 3'b000; //Non-load/store instructions
         else begin
             
             //Width dependant on funct3
