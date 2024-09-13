@@ -31,14 +31,15 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module rf(input clk, reset,
-          input [4:0] A1, A2, A3,
-          input [31:0] WD3,
-          input WE3,
-          output [31:0] RD1, RD2);
+module rf #(parameter WIDTH = 32)
+           (input clk, reset,
+            input [4:0] A1, A2, A3,
+            input [WIDTH-1:0] WD3,
+            input WE3,
+            output [WIDTH-1:0] RD1, RD2);
     
     //Signals to hold the values of the created registers at all times
-    wire [31:0] RegisterArray [31:0];
+    wire [WIDTH-1:0] RegisterArray [31:0];
     
     //will enable writing to register that matches index of the active bit
     wire [31:0] en;

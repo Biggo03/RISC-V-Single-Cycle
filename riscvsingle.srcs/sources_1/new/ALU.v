@@ -21,13 +21,14 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module ALU(input [3:0] ALUControl,
-           input [31:0] A, B,
-           output [31:0] ALUResult,
-           output N, Z, C, V);
+module ALU #(parameter WIDTH = 32)
+            (input [3:0] ALUControl,
+             input [WIDTH-1:0] A, B,
+             output [WIDTH-1:0] ALUResult,
+             output N, Z, C, V);
 
     //Intermediate signals for use in always statement
-    reg [31:0] TempResult;
+    reg [WIDTH-1:0] TempResult;
     reg Cout;
     reg TempC, TempV; 
     
@@ -39,7 +40,7 @@ module ALU(input [3:0] ALUControl,
         //Operation Logic
         case(ALUControl)
             4'b1000: {Cout, TempResult} = A + B; //Addition
-            4'b1001: {Cout, TempResult} = {1'b0, A} - {1'b0, B}; //Subtraction
+            4'b1001: {Cout, TempResult} = A - B; //Subtraction
             4'b0010: TempResult = A & B; //AND
             4'b0011: TempResult = A | B; //OR
             4'b0100: TempResult = A ^ B; //XOR
@@ -50,12 +51,12 @@ module ALU(input [3:0] ALUControl,
             //SLT
             4'b0101: begin
                     TempResult = A - B;
-                    VControl = ~(ALUControl[0] ^ A[31] ^ B[31]) & (A[31] ^ TempResult[31]);
+                    VControl = ~(ALUControl[0] ^ A[WIDTH-1] ^ B[WIDTH-1]) & (A[WIDTH-1] ^ TempResult[WIDTH-1]);
                     
                     
                     //LT comparison for sgined numbers determined by V and N flags (V ^ N)
-                    if (VControl ^ TempResult[31]) TempResult = {32{1'b1}};
-                    else TempResult = 32'b0;
+                    if (VControl ^ TempResult[WIDTH-1]) TempResult = {WIDTH{1'b1}};
+                    else TempResult = 0;
                 
             end
             
@@ -63,12 +64,12 @@ module ALU(input [3:0] ALUControl,
             4'b0110: begin
                 
                 //Assumed unsigned representation
-                if (A < B) TempResult = {32{1'b1}};
-                else TempResult = 32'b0;
+                if (A < B) TempResult = {WIDTH{1'b1}};
+                else TempResult = 0;
                 
             end
             
-            default: TempResult = 32'bx; //Undefined case
+            default: TempResult = {WIDTH{1'bx}}; //Undefined case
         
         endcase
         
@@ -78,7 +79,7 @@ module ALU(input [3:0] ALUControl,
             //Carry flag is inverse of Cout if Subtracting
             TempC = ALUControl[0] ? ~Cout : Cout;
             
-            TempV = ~(ALUControl[0] ^ A[31] ^ B[31]) & (A[31] ^ TempResult[31]);
+            TempV = ~(ALUControl[0] ^ A[WIDTH-1] ^ B[WIDTH-1]) & (A[WIDTH-1] ^ TempResult[WIDTH-1]);
             
         end
         
@@ -87,7 +88,7 @@ module ALU(input [3:0] ALUControl,
     //Flag Assignment
         
     //Negative Flag
-    assign N = TempResult[31];
+    assign N = TempResult[WIDTH-1];
     
     //Zero Flag
     assign Z = &(~TempResult);
