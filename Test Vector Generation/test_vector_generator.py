@@ -397,7 +397,7 @@ def ALU_vector_gen(vector_per_op, file, test_case="Random"):
                 else:
                     overflow = "0"
                 
-                if (a.uint > b.uint):
+                if (a.uint >= b.uint):
                     carry = "1"
                 else:
                     carry = "0"

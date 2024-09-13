@@ -34,7 +34,6 @@ module ALU(input [3:0] ALUControl,
     //VControl is used to determine if the overflow flag would be set
     reg VControl;
     
-    
     always @(*) begin
         
         //Operation Logic
@@ -80,7 +79,6 @@ module ALU(input [3:0] ALUControl,
             TempC = ALUControl[0] ? ~Cout : Cout;
             
             TempV = ~(ALUControl[0] ^ A[31] ^ B[31]) & (A[31] ^ TempResult[31]);
-;
             
         end
         
