@@ -62,7 +62,8 @@ module ALU(input [3:0] ALUControl,
             
             //SLTU
             4'b0110: begin
-
+                
+                //Assumed unsigned representation
                 if (A < B) TempResult = {32{1'b1}};
                 else TempResult = 32'b0;
                 
@@ -74,14 +75,12 @@ module ALU(input [3:0] ALUControl,
         
         //Overflow and Carry Flag logic
         if (ALUControl[3] == 1'b1) begin
+                      
+            //Carry flag is inverse of Cout if Subtracting
+            TempC = ALUControl[0] ? ~Cout : Cout;
             
-            VControl = ~(ALUControl[0] ^ A[31] ^ B[31]) & (A[31] ^ TempResult[31]);
-            
-            if (Cout == 1'b1) TempC = 1'b1;
-            else TempC = 1'b0;
-            
-            if (VControl == 1'b1) TempV = 1'b1;
-            else TempV = 1'b0;
+            TempV = ~(ALUControl[0] ^ A[31] ^ B[31]) & (A[31] ^ TempResult[31]);
+;
             
         end
         
