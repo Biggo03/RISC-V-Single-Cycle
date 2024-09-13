@@ -62,12 +62,9 @@ module ALU(input [3:0] ALUControl,
             
             //SLTU
             4'b0110: begin
-                
-                    {Cout, TempResult} = A - B;
-                
-                    //LT comparison for unsigned numbers determined by C
-                    if (Cout) TempResult = {32{1'b1}};
-                    else TempResult = 32'b0;
+
+                if (A < B) TempResult = {32{1'b1}};
+                else TempResult = 32'b0;
                 
             end
             

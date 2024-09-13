@@ -356,10 +356,15 @@ def ALU_vector_gen(vector_per_op, file, test_case="Random"):
             
             #SLTU
             elif (opCode.bin == "0110"):
+                print("huh")
+                print(a.uint, b.uint)
+                print(a.bin, b.bin)
                 if (a.uint < b.uint):
                     expected_result = BitArray(int=-1, length=32)
                 else:
                     expected_result = BitArray(int=0, length=32)     
+                
+                print(expected_result)
 
             #Shit left logical
             elif (opCode.bin == "0111"):
@@ -428,7 +433,7 @@ def ALU_vector_gen(vector_per_op, file, test_case="Random"):
 
 def main():
     
-    filename = "reduce_test_vectors.txt"
+    filename = "ALU_test_vectors.txt"
     vector_per_op = 100
 
     with open(filename, "w") as file:
