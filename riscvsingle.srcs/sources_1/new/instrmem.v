@@ -27,8 +27,11 @@ module instrmem(input [31:0] A,
     reg [31:0] RAM [63:0];
     
     //Initialize instruction memory with given file
-    initial $readmemh("riscvprogram.txt", RAM);
+    initial begin
     
+        $readmemh("riscvprogram.txt", RAM);
+ 
+    end
     //[31:2] as to maintain word alignment
     assign RD = RAM[A[31:2]];
 
