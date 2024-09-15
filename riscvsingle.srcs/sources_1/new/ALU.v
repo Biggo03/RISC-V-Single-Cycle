@@ -55,7 +55,7 @@ module ALU #(parameter WIDTH = 32)
                     
                     
                     //LT comparison for sgined numbers determined by V and N flags (V ^ N)
-                    if (VControl ^ TempResult[WIDTH-1]) TempResult = {WIDTH{1'b1}};
+                    if (VControl ^ TempResult[WIDTH-1]) TempResult = 1;
                     else TempResult = 0;
                 
             end
@@ -64,7 +64,7 @@ module ALU #(parameter WIDTH = 32)
             4'b0110: begin
                 
                 //Assumed unsigned representation
-                if (A < B) TempResult = {WIDTH{1'b1}};
+                if (A < B) TempResult = 1;
                 else TempResult = 0;
                 
             end

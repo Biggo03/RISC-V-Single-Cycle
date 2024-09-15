@@ -29,7 +29,7 @@ module instrmem(input [31:0] A,
     //Initialize instruction memory with given file
     initial begin
     
-        $readmemh("riscvprogram.txt", RAM);
+        $readmemh("riscvprogram_4.txt", RAM);
  
     end
     //[31:2] as to maintain word alignment

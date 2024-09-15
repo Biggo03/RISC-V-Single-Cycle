@@ -21,7 +21,7 @@
 
 
 module riscvsingle(input clk, reset,
-                   output PC,
+                   output [31:0] PC,
                    input [31:0] instr,
                    output MemWrite,
                    output [2:0] WidthSrc,

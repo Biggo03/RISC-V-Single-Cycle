@@ -52,7 +52,7 @@ module datapath(input clk, reset,
     
     
     //Register File Logic
-    rf RegisterFile(clk, reset, instr[19:15], instr[24:20], instr[11:7], Result, SrcA, WriteData);
+    rf RegisterFile(clk, reset, instr[19:15], instr[24:20], instr[11:7], Result, RegWrite, SrcA, WriteData);
     extend Extend(instr[31:7], ImmSrc, ImmExt);
     
     

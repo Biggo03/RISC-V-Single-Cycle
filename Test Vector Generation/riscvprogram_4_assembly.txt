@@ -1,0 +1,16 @@
+Instruction               Description                                  Address
+addi x18, x0, 500         #x18 = 500                                   0
+sb x18, 40(x0)            #mem[40] = 0x000000F4                        4
+addi x18, x18, 90000      #x18 = 90500                                 8
+sh x18, 42(x0)            #mem[40] = 0x618400F4                        12
+addi x19, x0, -1          #x19 = -1                                    16
+bgeu x19, x18, branch1    #unsigned(x19) > unsigned(x18) -> branch     20
+sh x18, 40(x0)            #shouldn't run (if ran mem[40]=0x00016184)   24
+branch1:                                          
+lb x18, 40(x0)            #x18 = 0xFFFFFFF4 (-12)                      28
+lbu x19, 42(x0)           #x19 = 0x00000084 (24964)                    32
+andi x19, x19, 7695       #x19 = 4                                     36
+ori x19, x19, 25          #x19 = 29                                    40
+xori x19, x19, 4          #x19 = 25                                    44
+sw x19, 100(x0)           #mem[100] = 25                               48
+beq x0, x0, done          #infinite loop  		               52
