@@ -27,9 +27,11 @@ module datamem #(parameter WIDTH = 32)
              output [WIDTH-1:0] RD);
                
     reg [31:0] RAM[63:0];
+    reg [31:0] TempRD;
 
     always @(posedge clk) begin
         
+        //Write logic
         if (WE) begin
         //Change last bit of A index to maintain word, and half-word alignment
             case(WidthSrc)
@@ -55,10 +57,34 @@ module datamem #(parameter WIDTH = 32)
             endcase
         
         end
+        
+        //Readlogic
+        
+        case(WidthSrc)
+            2'b00: TempRD = RAM[A[31:2]]; //Word
+            
+            //Half-word
+            2'b10: begin
+                if (A[1]) TempRD = RAM[A[31:2]][31:16]; //Upper HW
+                else TempRD = RAM[A[31:2]][15:0];       //Lower HW
+            end
+            
+            //Byte
+            2'b01: begin
+                case(A[1:0])
+                    2'b00: TempRD = RAM[A[31:2]][7:0];    //Byte 0
+                    2'b01: TempRD = RAM[A[31:2]][15:8];   //Byte 1
+                    2'b10: TempRD = RAM[A[31:2]][23:16];  //Byte 2
+                    2'b11: TempRD = RAM[A[31:2]][31:24];  //Byte 3
+                endcase
+                
+            end
+        
+        endcase
        
     end
     
-    assign RD = RAM[A[31:2]];
+    assign RD = TempRD;
     
 
 endmodule

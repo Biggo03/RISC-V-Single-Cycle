@@ -32,12 +32,6 @@ module datamem_TB();
     logic [15:0] RDHWExp [127:0];
     logic [7:0] RDByteExp [255:0];
     
-    //Used for indexing in half word
-    int LowHW, HighHW;
-    
-    //Used for indexing in Byte storage tests
-    int Byte0, Byte1, Byte2, Byte3;
-    
     //Instantiate DUT
     datamem DUT(clk, WE, WidthSrc, A, WD, RD);
     
@@ -75,21 +69,17 @@ module datamem_TB();
         end
         
         //Disable WE, and set intial low and high indices
-        WE = 0; LowHW = 0; HighHW = 1;
+        WE = 0;
         
        
         //Ensure values are as expected
-        for (int i = 0; i < 64; i++) begin
+        for (int i = 0; i < 128; i++) begin
             
-            A = (i * 4); #20;
+            A = (i * 2); #20;
             
-            assert (RD[31:16] === RDHWExp[HighHW] & RD[15:0] === RDHWExp[LowHW]) 
-            else $fatal("Error: WidthSrc: %b.\nAddress: %d\nExpected upper value: %b\nActual upper value:   %b\n\
-                     Expected lower value: %b\nActual lower value:   %b", 
-                     WidthSrc, A, RDHWExp[HighHW], RD[31:16], RDHWExp[LowHW], RD[15:0]);
-            
-            //Increment low and high indices
-            LowHW = LowHW + 2; HighHW = HighHW + 2;
+            assert (RD[15:0] === RDHWExp[i]) 
+            else $fatal("Error: WidthSrc: %b.\nAddress: %d\nExpected value: %b\nActual value:   %b", 
+                     WidthSrc, A, RDHWExp[i], RD[15:0]);
             
         end
         
@@ -106,22 +96,18 @@ module datamem_TB();
         end
         
         //Disable WE, and set intial byte indices
-        WE = 0; Byte0 = 0; Byte1 = 1; Byte2 = 2; Byte3 = 3;
+        WE = 0;
         
-        for (int i = 0; i < 64; i++) begin
+        for (int i = 0; i < 256; i++) begin
         
-            A = (i * 4); #20;
+            A = i; #20;
             
-            assert(RD[31:24] === RDByteExp[Byte3] & RD[23:16] === RDByteExp[Byte2] & RD[15:8] === RDByteExp[Byte1] & RD[7:0] === RDByteExp[Byte0])
+            assert(RD[7:0] === RDByteExp[i])
             else $fatal("Error: WidthSrc: %b.\nAddress: %d\
-                         \nExpected byte3: %b\nActual byte3:   %b\nExpected byte2: %b\nActual byte2:   %b\
-                         \nExpected byte1: %b\nActual byte1:   %b\nExpected byte0: %b\nActual byte0:   %b",
-                         WidthSrc, A, RDByteExp[Byte3], RD[31:24], RDByteExp[Byte2], RD[23:16],
-                         RDByteExp[Byte1], RD[15:8], RDByteExp[Byte0], RD[7:0]);
+                         \nExpected byte: %b\nActual byte:   %b",
+                         WidthSrc, A, RDByteExp[i], RD[7:0]);
         
-            //Increment byte indices
-            Byte0 = Byte0 + 4; Byte1 = Byte1 + 4; Byte2 = Byte2 + 4; Byte3 = Byte3 + 4;
-        
+         
         end
         
         $display("Simulation Succesful!");
