@@ -28,7 +28,7 @@ module top_level_TB();
     top DUT(clk, reset, WriteData, DataAdr, MemWrite);
     
     initial begin
-        MemWrite = 0; clk = 0; reset = 1; #10; reset = 0; MemWrite = 0;
+        MemWrite = 0; clk = 0; reset = 1; #10; reset = 0;
     end
     
     always begin

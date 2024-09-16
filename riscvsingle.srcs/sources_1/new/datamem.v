@@ -58,8 +58,11 @@ module datamem #(parameter WIDTH = 32)
         
         end
         
-        //Readlogic
-        
+    end
+    
+    //Read logic
+    always @(*) begin
+    
         case(WidthSrc)
             2'b00: TempRD = RAM[A[31:2]]; //Word
             
@@ -77,11 +80,11 @@ module datamem #(parameter WIDTH = 32)
                     2'b10: TempRD = RAM[A[31:2]][23:16];  //Byte 2
                     2'b11: TempRD = RAM[A[31:2]][31:24];  //Byte 3
                 endcase
-                
+
             end
         
         endcase
-       
+        
     end
     
     assign RD = TempRD;
