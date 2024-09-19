@@ -37,6 +37,9 @@ module ALU #(parameter WIDTH = 32)
     
     always @(*) begin
         
+        //Set default value for Cout
+        Cout = 1'b0;
+        
         //Operation Logic
         case(ALUControl)
             4'b1000: {Cout, TempResult} = A + B; //Addition
@@ -46,7 +49,7 @@ module ALU #(parameter WIDTH = 32)
             4'b0100: TempResult = A ^ B; //XOR
             4'b0111: TempResult = A << B; //Shift Left Logical
             4'b0000: TempResult = A >> B; //Shift Right Logical
-            4'b0001:TempResult = $signed(A) >>> B; //Shift Right Arithmetic
+            4'b0001: TempResult = $signed(A) >>> B; //Shift Right Arithmetic
                 
             //SLT
             4'b0101: begin
@@ -69,7 +72,7 @@ module ALU #(parameter WIDTH = 32)
                 
             end
             
-            default: TempResult = {WIDTH{1'bx}}; //Undefined case
+            default: TempResult = {(WIDTH + 1){1'bx}}; //Undefined case
         
         endcase
         
@@ -81,6 +84,10 @@ module ALU #(parameter WIDTH = 32)
             
             TempV = ~(ALUControl[0] ^ A[WIDTH-1] ^ B[WIDTH-1]) & (A[WIDTH-1] ^ TempResult[WIDTH-1]);
             
+        end else begin
+            //Default values of TemoC and TempV
+            TempC = 1'b0;
+            TempV = 1'b0;
         end
         
     end

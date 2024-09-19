@@ -330,40 +330,74 @@ def ALU_vector_gen(vector_per_op, file, test_case="Random"):
             #shift right logical
             if (opCode.bin == "0000"):
                 expected_result  = a >> b.uint
+
+                #Set carry and overflow to default
+                carry = "0"
+                overflow = "0"
+
             
             #shift right arithmetic
             elif (opCode.bin == "0001"):
                 expected_result = arithmetic_right_shift(a, b.uint)
 
+                #Set carry and overflow to default
+                carry = "0"
+                overflow = "0"
+
+
             #AND
             elif (opCode.bin == "0010"):
                 expected_result = a & b
 
+                #Set carry and overflow to default
+                carry = "0"
+                overflow = "0"
+
             #OR
             elif (opCode.bin == "0011"):
                 expected_result = a | b
+        
+                #Set carry and overflow to default
+                carry = "0"
+                overflow = "0"
 
             #XOR
             elif (opCode.bin == "0100"):
                 expected_result = a ^ b
+           
+                #Set carry and overflow to default
+                carry = "0"
+                overflow = "0"
             
             #SLT
             elif (opCode.bin == "0101"):
                 if (a.int < b.int):
-                    expected_result = BitArray(int=-1, length=32)
+                    expected_result = BitArray(int=1, length=32)
                 else:
                     expected_result = BitArray(int=0, length=32)
+            
+                #Set carry and overflow to default
+                carry = "0"
+                overflow = "0"
             
             #SLTU
             elif (opCode.bin == "0110"):
                 if (a.uint < b.uint):
-                    expected_result = BitArray(int=-1, length=32)
+                    expected_result = BitArray(int=1, length=32)
                 else:
-                    expected_result = BitArray(int=0, length=32)     
+                    expected_result = BitArray(int=0, length=32)   
+
+                #Set carry and overflow to default
+                carry = "0"
+                overflow = "0"  
 
             #Shit left logical
             elif (opCode.bin == "0111"):
                 expected_result = a << b.uint 
+
+                #Set carry and overflow to default
+                carry = "0"
+                overflow = "0"
             
             #Addition
             elif (opCode.bin == "1000"):
