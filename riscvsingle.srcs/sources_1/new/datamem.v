@@ -26,7 +26,7 @@ module datamem #(parameter WIDTH = 32)
              input [WIDTH-1:0] A, WD,
              output [WIDTH-1:0] RD);
                
-    reg [31:0] RAM[63:0];
+    (* keep = "true" *) reg [31:0] RAM[255:0];
     reg [31:0] TempRD;
 
     always @(posedge clk) begin
@@ -82,8 +82,12 @@ module datamem #(parameter WIDTH = 32)
                 endcase
 
             end
+            
+            default: TempRD = 32'bx;
         
         endcase
+        
+        
         
     end
     
