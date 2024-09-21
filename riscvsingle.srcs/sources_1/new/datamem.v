@@ -87,8 +87,6 @@ module datamem #(parameter WIDTH = 32)
         
         endcase
         
-        
-        
     end
     
     assign RD = TempRD;
