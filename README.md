@@ -1,4 +1,5 @@
 # RISC-V-Single-Cycle
+A single-cycle implementation of a RISC-V microprocessor in Verilog.
 
 ## Introduction
 This project is a single-cycle implementation of a RISC-V microprocessor, developed using Verilog. The processor executes one instruction per clock cycle and implements the RV32I instruction set architecture (ISA). This compact yet powerful architecture is widely used in both academia and industry for building RISC processors.
