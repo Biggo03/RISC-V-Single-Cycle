@@ -13,8 +13,14 @@ A schematic for the complete microarchitecture can be found in the "Documentatio
 ## Key Features
 - Single-cycle operation for simplified control logic
 - Implements RV32I instructions
-- Seperate Instruction and data memories
+- Separate Instruction and data memories
 - Testbenches for hardware validation
 
 ## Technical Details
 For a detailed explanation of the architecture, supported instructions, control signals, and testing procedures, please refer to [TECHNICAL_DETAILS.md](Documentation/Technical_Documentation.md).
+
+## Future Work
+I plan on building on this processor in the future, although I will begin work in a seperate repository. Plans for building onto this porcessor include adding interrupt handelling, pipelining, branch prediction, and a memory hierarchy/cache system. Once the repositroy is created and work has begun I will link it here.
+
+## Acknowledgments
+S. Harris and D. Harris, Digital design and computer architecture: RISC-V Edition. Morgan Kaufmann, 2021.
