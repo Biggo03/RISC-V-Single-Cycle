@@ -18,14 +18,14 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
-
-
 module top(input clk, reset,
-           output [31:0] WriteData, DataAdr,
-           output MemWrite);
-           
-    wire [31:0] PC, Instr, ReadData;
-    wire [2:0] WidthSrc;
+           output [31:0] WriteData, 
+           output [31:0] DataAdr,
+           output MemWrite
+           );
+    
+    (* keep = "true" *) wire [31:0] PC, Instr, ReadData;
+    (* keep = "true" *) wire [2:0] WidthSrc;
     
     //instantiation of processor and memories
     riscvsingle rvsingle(clk, reset, PC, Instr, MemWrite,
