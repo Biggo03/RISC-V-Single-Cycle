@@ -19,8 +19,7 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-
-module top_level_TB();
+ module top_level_TB();
     
     logic clk, reset, MemWrite;
     logic [31:0] WriteData, DataAdr;
@@ -28,16 +27,17 @@ module top_level_TB();
     top DUT(clk, reset, WriteData, DataAdr, MemWrite);
     
     initial begin
-        MemWrite = 0; clk = 0; reset = 1; #10; reset = 0;
+        MemWrite = 0;
+        clk = 0; reset = 1; #15.4; reset = 0;
     end
     
     always begin
-        clk = ~clk; #5;
+        clk = ~clk; #7.7;
     end
     
     always @(negedge clk) begin
         
-        if (MemWrite & DataAdr > 80) begin
+        if (MemWrite & DataAdr > 90 & DataAdr < 120) begin
             if (DataAdr === 100 & WriteData === 25) begin
                 $display("Success!");
                 $stop;
@@ -47,7 +47,7 @@ module top_level_TB();
             
             end
         end
-        
+   
     end
     
 endmodule
