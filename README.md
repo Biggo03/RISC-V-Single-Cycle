@@ -8,6 +8,8 @@ A single-cycle processor processes one instruction in every clock cycle. As a re
 
 The project showcases a fundamental understanding of processor architecture by implementing key RISC-V instructions and focusing on control and data paths. By integrating testbenches for validation, this project also emphasizes the importance of hardware testing and verification.
 
+A schematic for the complete microarchitecture can be found in the "Documentation" folder.
+
 ## Supported instructions
 
 | Instruction | Type | Opcode | Description |
