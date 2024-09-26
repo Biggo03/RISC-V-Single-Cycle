@@ -22,5 +22,8 @@ For a detailed explanation of the architecture, supported instructions, control 
 ## Future Work
 I plan on building on this processor in the future, although I will begin work in a seperate repository. Plans for building onto this porcessor include adding interrupt handelling, pipelining, branch prediction, and a memory hierarchy/cache system. Once the repositroy is created and work has begun I will link it here.
 
+## AI Use
+ChatGPT was utilized to improve the clarity of written work and to provide insights into technical development. Specifically, it assisted with understanding how Verilog could be applied to achieve certain outcomes, such as using a generate statement to create multiple registers. Importantly, AI was not used to directly generate any modules or testbenches, but rather to support understanding and refinement of the development process.
+
 ## Acknowledgments
 S. Harris and D. Harris, Digital design and computer architecture: RISC-V Edition. Morgan Kaufmann, 2021.
