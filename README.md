@@ -20,7 +20,7 @@ A schematic for the complete microarchitecture can be found in the "Documentatio
 For a detailed explanation of the architecture, supported instructions, control signals, and testing procedures, please refer to [TECHNICAL_DETAILS.md](Documentation/Technical_Documentation.md).
 
 ## Future Work
-I plan on building on this processor in the future, although I will begin work in a seperate repository. Plans for building onto this processor include adding interrupt handelling, pipelining, branch prediction, and a memory hierarchy/cache system. Once the repositroy is created and work has begun I will link it here.
+I plan on building on this processor in the future, although I will begin work in a seperate repository. Plans for building onto this processor include adding interrupt handelling, pipelining, branch prediction, and a memory hierarchy/cache system. The repository was recently created, and can be found here: [Pipelined_Processor](https://github.com/Biggo03/RISC-V-Pipelined)
 
 ## AI Use
 ChatGPT was utilized to improve the clarity of written work and to provide insights into technical development. Specifically, it assisted with understanding how Verilog could be applied to achieve certain outcomes, such as using a generate statement to create multiple registers. Importantly, AI was not used to directly generate any modules or testbenches, but rather to support understanding and refinement of the development process.
