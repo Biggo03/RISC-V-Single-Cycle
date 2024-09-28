@@ -165,9 +165,9 @@ The immediate extension unit needs to extend immediates depending on the type of
 ## Testing and Validation
 The design includes testbenches for individual components, as well as a top-level testbench for overall validation. The following details the testing setup:
 
-- Component Tests: The ALU, Extension, and Reduce components require the generation of test vectors using the Python script test_vector_generation.py, located in the "Test Vector Generation" directory.
+- Component Tests: The ALU, Extension, and Reduce components require the generation of test vectors using the Python script test_vector_generation.py, located in the "Test_Files" directory.
 
-- Top-Level Testbench: This testbench requires RISC-V machine code to be loaded into the instruction memory. Several example programs can be found in the Test Vector Generation/riscvprograms directory.
+- Top-Level Testbench: This testbench requires RISC-V machine code to be loaded into the instruction memory. Several example programs can be found in the "Test_Files/riscvprograms" directory.
 
 - Independent Testbenches: Aside from the files required for the components mentioned above, all other testbenches can run independently without additional setup.
 
