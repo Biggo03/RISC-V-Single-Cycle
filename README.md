@@ -17,7 +17,7 @@ A schematic for the complete microarchitecture can be found in the "Documentatio
 - Testbenches for hardware validation
 
 ## Technical Details
-For a detailed explanation of the architecture, supported instructions, control signals, and testing procedures, please refer to [TECHNICAL_DETAILS.md](Documentation/Technical_Documentation.md).
+For a detailed explanation of the architecture, supported instructions, control signals, and testing procedures, please refer to [Tehnical_Documentation.md](Documentation/Technical_Documentation.md).
 
 ## Future Work
 I plan on building on this processor in the future, although I will begin work in a seperate repository. Plans for building onto this processor include adding interrupt handelling, pipelining, branch prediction, and a memory hierarchy/cache system. The repository was recently created, and can be found here: [Pipelined_Processor](https://github.com/Biggo03/RISC-V-Pipelined)
