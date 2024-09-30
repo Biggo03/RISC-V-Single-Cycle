@@ -92,7 +92,7 @@
 - [Allowing Byte Addressable Loading](#bookmark=id.2fl7ucvd6ni0)  
 - [Top-Level Module Testing](#bookmark=id.svlep5aty2es)
 
-### **Changelog**
+### **Changelog:**
 
 - [Branch Decoder and Branching Logic](#bookmark=id.4iqo85y4fycp)  
 - [Width Decoder](#bookmark=id.kaqr7w5d14gc)  
@@ -217,7 +217,7 @@ The new component I added was a multiplexer controlled by a new signal, PCBaseSr
 
 The PCTarget signal is then routed to a multiplexer that selects between PCPlus4 and PCTarget. In this case, it will select PCTarget, completing the jump operation.
 
-### **Verilog Coding (August 24th-September 6th):**  
+## **Verilog Coding (August 24th-September 6th):**  
 In this section, I will detail the development of all Verilog modules, presented in the order they were created. I used the generic building blocks provided in Section 7.6.2 of the textbook as bases to work from. However, due to the additional features I incorporated into the processor, modifications were necessary.
 
 The modules are written in SystemVerilog within the textbook, requiring adjustments to be compatible with reg and wire types from standard Verilog. While I used the textbook code as a style guide and followed its organizational format for many of the higher-level modules, these implementations are not direct copies. I renamed some modules and made modifications to accommodate new signals and capabilities introduced during the design process.
@@ -269,7 +269,7 @@ The zero register's enable signal is hardwired to 0 to ensure it remains unwrita
 
 For reading register values, I used an assign statement to directly map the address index to the corresponding output port.
 
-## **Writing decoder (August 25th):**  
+### **Writing decoder (August 25th):**  
 **(Changes on September 3rd, September 10th and September 12th)**  
 This module takes in A  and WE as an input, and outputs en as an output. A is the address of the register that is to be enabled, WE is a signal determining if any bit will be enabled,  and en is a 32-bit signal that is essentially one-hot encoded to the register that is to be written to. 
 
