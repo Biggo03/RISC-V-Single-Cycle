@@ -625,7 +625,7 @@ Note that the IOB’s are only due to the top level module having output ports i
 To elaborate on the LUT’s, overall 1648 (9.36%) were used for logic functions, whereas 128 (0.727%) were used as distributed RAM (this was entirely within the dmem module)
 
 ### **Optimal Timing:**  
-With the setup as explained above, the design was able to achieve a maximum clock speed of 64.935Mhz, which is just over half of the maximum clock speed possible on the targeted FPGA board. This meant a clock period of 15.4ns, and allowed for a slack of 0.056ns, meaning that the clock speed could be improved slightly with no affect on performance.
+With the setup as explained above, the design was able to achieve a maximum clock speed of 64.935Mhz, which is just over half of the maximum clock speed possible on the targeted FPGA board. This meant a clock period of 15.4ns, and allowed for a slack of 0.056ns, meaning that the clock speed could be improved slightly with no affect on reliability.
 
 ### **Power Consumption:**  
 The total on chip power was given as 0.18W. 49% of power dissipation was dynamic, while the remaining 51% was static.
