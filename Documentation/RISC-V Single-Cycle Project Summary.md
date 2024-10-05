@@ -32,6 +32,35 @@ Each module was tested individually, and all using a SystemVerilog testbench in 
 
 The top level module was tested by creating a RISC-V assembly program that ran a subset of the implemented instructions. The programs were made such that a final result would only occur if all previous instructions ran correctly. There were 6 programs in total, with the 6th program being a combination of all previous programs. The first program used to test the design was taken from \[1\], and is not included in the final repository. The version of this program within the 6th program is changed due to differing requirements. To test different programs, the file loaded into instruction memory must be changed accordingly.
 
+## **Performance Summary:**
+The performance can be split into three measurable areas: utilization (area), power, and timing (performance).
+
+### **Utilization:**
+The processor utilized the following when synthesized on the Zybo Z7-10 development board:
+
+| Module   | LUT’s (17600) | Registers (35200) | F7 Muxes (8800) | F8 Muxes (4400) | Bonded IOB (100) |
+| :----    | :----         | :----             | :----           | :----           | :----            |
+| Top      | 1893 (10.7%)  | 1024 (2.91%)      | 367 (4.17%)     | 64 (1.45%)      | 67 (67%)         |
+| rvsingle | 1667 (9.47%)  | 1024 (2.91%)      | 277 (3.15%)     | 32 (0.723%)     | 0 (0%)           |
+| Dmem     | 149 (0.847%)  | 0 (0%)            | 64 (0.73%)      | 32 (0.723%)     | 0 (0%)           |
+
+### **Timing:**
+Optimizing synthesis for performance, the design was able to achieve an **fmax** of **66.05Mhz**, corrosponding to a minimum clock period of **15.140ns**.
+
+### **Power:**
+The total on chip power was given as **0.18W**. **49%** of power dissipation was dynamic, while the remaining **51%** was static.
+
+The dynamic power further broke down as follows:
+
+| Process | Power Consumption |
+| :---- | :---- |
+| Clocks | 0.006W (7%) |
+| Signals | 0.065W (30%) |
+| Logic | 0.020W (22%) |
+| I/O | 0.036W (41%) |
+
+**Note:** The percentages given are percentages of dynamic power, not total power.
+
 ## **Future Plans:**  
 I plan to continue work on this project, and continually add new features. To maintain a stable release while reworking the development process, I will create a new repository for the next iteration of the project, including its own documentation and development log. I could make a branch to the current repository, however I still want to create a separate development log, and ultimately having two development logs could be confusing, and make the repository messier than it needs to be. 
 
