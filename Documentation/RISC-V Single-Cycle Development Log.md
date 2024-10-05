@@ -596,6 +596,7 @@ This was quite a challenge, so I covered my testing process in [**Challenges sec
 All other problems were related to creating the assembly programs that were to be made, and assembly programming is not a focus of this project, so I will be leaving it out for now.
 
 ## **Synthesis (September 16th-September 20th):**
+**(October 5th)**
 
 ### **Overview:**  
 As I didn’t have any experience with synthesis or implementation, this portion of the project was particularly challenging. Initially I was planning to base my performance metrics off of both synthesis and implementation, however as implementation speed can be very variable depending on implementation settings, and optimizing the actual implementation was never my goal with this project, I’m going to leave it at synthesis. 
@@ -609,23 +610,23 @@ Therefore I created a RISC-V assembly program (riscvprogram\_6.txt) that was ess
 
 This required extending the instruction memories capacity, however that is not really an issue.  
 ### **Synthesis settings:**  
-The synthesis settings were all set to Vivado’s defaults, this was to ensure that the results would be easily compared with later iterations of the design without needing to edit any settings.
+The synthesis settings were all set to Vivados high-performance  preset, this was to ensure that the results would be easily compared with later iterations of the design without needing to edit any settings. Initially the default synthesis setting were used, for information on why this was changed see [**Changelog section #10**](#10-Change-in-Synthesis-Strategy-October-5th).
 
 ### **Utilization:**  
 The utilization of the device was as follows:
 
-| Module | LUT’s (17600) | Registers (35200) | F7 Muxes (8800) | F8 Muxes (4400) | Bonded IOB (100) |
-| :---- | :---- | :---- | :---- | :---- | :---- |
-| Top | 1776 (10.1%) | 1024 (2.91%) | 367 (4.17%) | 64 (1.45%) | 67 (67%) |
-| rvsingle | 1562 (8.875%) | 1024 (2.91%) | 277 (3.15%( | 32 (0.723%) | 0 (0%) |
-| Dmem | 149 (0.847%) | 0 (0%) | 64 (0.73%) | 32 (0.723%) | 0 (0%) |
+| Module   | LUT’s (17600) | Registers (35200) | F7 Muxes (8800) | F8 Muxes (4400) | Bonded IOB (100) |
+| :----    | :----         | :----             | :----           | :----           | :----            |
+| Top      | 1893 (10.7%)  | 1024 (2.91%)      | 367 (4.17%)     | 64 (1.45%)      | 67 (67%)         |
+| rvsingle | 1667 (9.47%)  | 1024 (2.91%)      | 277 (3.15%)     | 32 (0.723%)     | 0 (0%)           |
+| Dmem     | 149 (0.847%)  | 0 (0%)            | 64 (0.73%)      | 32 (0.723%)     | 0 (0%)           |
 
 Note that the IOB’s are only due to the top level module having output ports in order for testing, the design does not inherently require these IOB’s.
 
-To elaborate on the LUT’s, overall 1648 (9.36%) were used for logic functions, whereas 128 (0.727%) were used as distributed RAM (this was entirely within the dmem module)
+To elaborate on the LUT’s, overall 1765 (10%) were used for logic functions, whereas 128 (0.727%) were used as distributed RAM (this was entirely within the dmem module)
 
 ### **Optimal Timing:**  
-With the setup as explained above, the design was able to achieve a maximum clock speed of 64.935Mhz, which is just over half of the maximum clock speed possible on the targeted FPGA board. This meant a clock period of 15.4ns, and allowed for a slack of 0.056ns, meaning that the clock speed could be improved slightly with no affect on reliability.
+With the setup as explained above, the design was able to achieve a maximum clock speed of 66.05Mhz, which is just over half of the maximum clock speed possible on the targeted FPGA board. This meant a minimum clock period of 15.14ns.
 
 ### **Power Consumption:**  
 The total on chip power was given as 0.18W. 49% of power dissipation was dynamic, while the remaining 51% was static.
@@ -635,9 +636,9 @@ The dynamic power further broke down as follows:
 | Process | Power Consumption |
 | :---- | :---- |
 | Clocks | 0.006W (7%) |
-| Signals | 0.025W (29%) |
-| Logic | 0.019W (22%) |
-| I/O | 0.036W (42%) |
+| Signals | 0.065W (30%) |
+| Logic | 0.020W (22%) |
+| I/O | 0.036W (41%) |
 
 Note that the percentages given are percentages of dynamic power, not total power.
 
@@ -761,6 +762,9 @@ Initially the data memory module only read out words along word aligned boundari
 
 ### **\#9 Removal of Latches (September 17th):**  
 I just went through the design and removed latches from the ALU module, and the datamem module. The latches in the ALU module included the reg signals: Cout, TempV, and TempC. Cout was given a value for every case by just appending it to the end of all TempResult assignments. TempC and TempV were just given default values of 0\. This shouldn’t affect anything, as the only time flags are used is in branching. The latch in datamem was the TempRD value, and I made it so that any undefined WidthSrc signal will lead to TempRD being assigned to X.
+
+### **\#10 Change in Synthesis Strategy (October 5th):**
+As Vivado's default synthesis strategy allows for resource sharing, the pipelined version of this processor had longer delays for some paths, and shorter for others, while the single-cycle design has uniform delay for all paths. I believe that this makes the comparison between the two less accurate, and as such decided to compare performance using the synthesis preset for performance, as this allows for the maximum clock speed to be accurately determined for both processors, while still accurately comparing resource utilization and power.
 
 ## **Key Takeaways:**
 
